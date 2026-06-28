@@ -1,10 +1,10 @@
 const express = require('express');
 
 const app = express();
-const authRouter = require('./routes/authRoutes');
-const remindersRouter = require('./routes/remindersRoutes')
-const errorHandler = require('./middleware/errorHandler');
-const auth = require('./middleware/authHandler');
+const authRouter = require('./src/routes/authRoutes');
+const remindersRouter = require('./src/routes/remindersRoutes')
+const errorHandler = require('./src/middleware/errorHandler');
+const auth = require('./src/middleware/authHandler');
 const mongoose = require('mongoose');
 
 app.use(express.json());
