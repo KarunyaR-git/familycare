@@ -83,9 +83,36 @@ async function updateReminderById(req, res, next) {
     }
 }
 
+async function deleteReminderById(req, res, next) {
+    const id = req.params.id;
+    if(mongoose.Types.ObjectId.isValid(id)) {
+        try {
+            const filter = {
+                _id: id,
+                userId: req.user.userId
+            }
+            const deletedUser = await Reminder.findOneAndDelete(filter);
+            if(deletedUser) {
+                res.status(204).end();
+            } else {
+                const error = new Error('Reminder not found');
+                error.statusCode = 404;
+                return next(error);
+            }
+        } catch(error) {
+            return next(error);
+        }
+    } else {
+        const error = new Error('Invalid id');
+        error.statusCode = 400;
+        return next(error);
+    }
+}
+
 module.exports = {
     createReminder,
     getAllReminders,
     getReminderById,
-    updateReminderById
+    updateReminderById,
+    deleteReminderById
 }
