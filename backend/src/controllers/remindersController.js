@@ -16,8 +16,60 @@ async function createReminder(req, res, next) {
 
 async function getAllReminders(req, res, next) {
     try{
-        const reminders = await Reminder.find({userId: req.user.userId});
-        return res.status(200).json(reminders);
+        const filter = {
+            userId: req.user.userId
+        }
+        const sortBy = req.query.sortBy;
+        const order = req.query.order;
+        const allowedSortField = ["title", "status", "reminderAt", "reminderBefore"];
+        const allowedOrderField = ["asc", "desc"];
+
+        if((sortBy && !allowedSortField.includes(sortBy)) || (order && !allowedOrderField.includes(order))) {
+            const error = new Error("Invalid sortBy or order value");
+            error.statusCode = 400;
+            return next(error);
+        }
+
+        const field = sortBy || "reminderAt"
+        let sortOptions = {
+           [field] : order || "asc"
+        }
+
+        if(req.query.status) {
+            filter.status = req.query.status;
+        }
+
+        const page = parseInt(req.query.page);
+        const limit = parseInt(req.query.limit);  
+
+        if((req.query.page && (isNaN(page) || page < 1 ) ) || (req.query.limit && ( isNaN(limit)  || limit < 1) ) ) {
+            const error = new Error("Invalid page or limit");
+            error.statusCode = 400;
+            return next(error);
+        }
+
+        const pagination = {
+            page: page || 1,
+            limit: limit || 10
+        };
+        const formula = (pagination.page - 1)*pagination.limit;
+
+        const reminders = await Reminder.find(filter)
+        .sort(sortOptions)
+        .skip(formula)
+        .limit(pagination.limit);
+
+        const total = await Reminder.countDocuments(filter);
+
+        const totalPages = Math.ceil(total / pagination.limit);
+        const response = {
+            total: total,
+            page: pagination.page,
+            limit: pagination.limit,
+            totalPages: totalPages,
+            data: reminders
+        }
+        return res.status(200).json(response);
     } catch(error) {
         return next(error)
     }
