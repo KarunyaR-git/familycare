@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const authRouter = require('./src/routes/authRoutes');
 const remindersRouter = require('./src/routes/remindersRoutes')
+const babyRouter = require('./src/routes/babyRoutes');
 const errorHandler = require('./src/middleware/errorHandler');
 const auth = require('./src/middleware/authHandler');
 const mongoose = require('mongoose');
@@ -14,6 +15,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/reminders', auth, remindersRouter);
+
+app.use('/babies', auth, babyRouter);
 
 app.use('/auth', authRouter);
 
