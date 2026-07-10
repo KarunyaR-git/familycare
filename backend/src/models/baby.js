@@ -28,5 +28,17 @@ const BabySchema = new mongoose.Schema({
     }
 });
 
+BabySchema.index(
+    {
+        userId: 1,
+        name: 1,
+        dob: 1,
+        gender: 1
+    },
+    {
+        unique: true
+    }
+);
+
 const Baby = new mongoose.model('Baby', BabySchema);
 module.exports = Baby;
