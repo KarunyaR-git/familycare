@@ -40,5 +40,5 @@ BabySchema.index(
     }
 );
 
-const Baby = new mongoose.model('Baby', BabySchema);
+const Baby = mongoose.model('Baby', BabySchema);
 module.exports = Baby;
