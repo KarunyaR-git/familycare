@@ -68,6 +68,87 @@ async function getAllFeedings(req, res, next) {
     
 }
 
+async function getfeedingById(req, res, next) {
+    const feedingId = req.params.id;
+    if(!mongoose.Types.ObjectId.isValid(feedingId)) {
+        const error = new Error("Invalid id");
+        error.statusCode = 400;
+        return next(error);
+    }
+    try{
+        const feeding = await Feeding.findOne({
+            _id: feedingId,
+            userId: req.user.userId
+        });
+        if(!feeding) {
+            const error = new Error("Feeding not found");
+            error.statusCode = 404;
+            return next(error);
+        }
+        res.status(200).json(feeding);
+    }catch(error) {
+        return next(error);
+    }    
+}
+
+async function updateFeedingById(req, res, next) {
+      const feedingId = req.params.id;
+      if(!mongoose.Types.ObjectId.isValid(feedingId)) {
+        const error = new Error("Invalid id");
+        error.statusCode = 400;
+        return next(error);
+      }
+      try{
+        const filter = {
+            _id: feedingId,
+            userId: req.user.userId
+        }
+        const existingFeeding = await Feeding.findOne(filter);
+        if(!existingFeeding) {
+            const error = new Error("Feeding not found");
+            error.statusCode = 404;
+            return next(error);
+        }
+        const allowedFields = [
+            "feedingAt",
+            "type",
+            "foodName",
+            "quantity",
+            "unit",
+            "duration",
+            "breastfeedingSide",
+            "notes"
+        ];
+
+        for (const field of allowedFields) {
+            if (req.body[field] !== undefined) {
+                existingFeeding[field] = req.body[field];
+            }
+        }
+        clearUnWantedFields(existingFeeding);
+        validateFeeding(existingFeeding);
+        
+        const updatedFeeding = await existingFeeding.save();
+        return res.status(200).json(updatedFeeding);
+      }catch(error) {
+        return next(error);
+      }
+}
+
+function clearUnWantedFields(feeding) {
+    if(["formula", "water", "solid", "other"].includes(feeding.type)) {
+        feeding.breastfeedingSide = undefined;
+        feeding.duration = undefined;
+        if(feeding.type == "formula" || feeding.type === "water") {
+            feeding.foodName = undefined;
+        }
+    } else {
+        feeding.quantity = undefined;
+        feeding.unit = undefined;
+        feeding.foodName = undefined;
+    }
+}
+
 function validateFeeding(feeding) {
     if(feeding.type === "breastfeeding" && (!feeding.duration || !feeding.breastfeedingSide)) {
         const error = new Error("duration and breastFedding Side are required for type breastFeeding");
@@ -88,5 +169,7 @@ function validateFeeding(feeding) {
 
 module.exports = {
     createFeeding,
-    getAllFeedings
+    getAllFeedings,
+    getfeedingById,
+    updateFeedingById
 }
