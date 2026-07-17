@@ -130,9 +130,33 @@ async function updateFeedingById(req, res, next) {
         
         const updatedFeeding = await existingFeeding.save();
         return res.status(200).json(updatedFeeding);
+
       }catch(error) {
         return next(error);
       }
+}
+
+async function deleteFeedingById(req, res, next) {
+    const feedingId = req.params.id;
+    if(!mongoose.Types.ObjectId.isValid(feedingId)) {
+        const error = new Error("Invalid id");
+        error.statusCode = 400;
+        return next(error);
+    }
+    try{
+        const deletedFeeding = await Feeding.findOneAndDelete({
+            _id: feedingId,
+            userId: req.user.userId
+        });
+        if(!deletedFeeding) {
+            const error = new Error("Feeding not found");
+            error.statusCode = 404;
+            return next(error);
+        }
+        return res.status(204).end();
+    } catch(error) {
+        return next(error);
+    }     
 }
 
 function clearUnWantedFields(feeding) {
@@ -171,5 +195,6 @@ module.exports = {
     createFeeding,
     getAllFeedings,
     getfeedingById,
-    updateFeedingById
+    updateFeedingById,
+    deleteFeedingById
 }
