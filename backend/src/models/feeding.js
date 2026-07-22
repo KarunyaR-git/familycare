@@ -50,7 +50,11 @@ const FeedingSchema = new mongoose.Schema({
         ref: 'Baby',
         required: true
     }
-});
+},
+{
+    timestamps: true
+}
+);
 
 const Feeding = mongoose.model('Feeding', FeedingSchema);
 module.exports = Feeding; 

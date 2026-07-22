@@ -29,7 +29,11 @@ const ReminderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true
     }
-})
+},
+{
+    timestamps: true
+}
+);
 
 const Reminder = mongoose.model('Reminder', ReminderSchema);
 module.exports = Reminder;

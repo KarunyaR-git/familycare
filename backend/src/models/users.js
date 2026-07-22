@@ -32,7 +32,11 @@ const UserSchema = new mongoose.Schema({
         lowercase: true,
         enum: ['user', 'admin']
     }
-})
+},
+{
+    timestamps: true
+}
+);
 
 const User = mongoose.model('User', UserSchema);
 module.exports = User;

@@ -1,28 +1,25 @@
 const mongoose = require('mongoose');
 
-const SleepSchema = new mongoose.Schema({
-    sleptAt: {
-        type: Date
+const DiaperSchema = new mongoose.Schema({
+    changedAt: {
+        type: Date,
+        required: true
     },
-    sleepNotes: {
+    type: {
+        type: String,
+        trim: true,
+        lowercase: true,
+        required: true,
+        enum: ["wet", "dirty", "both"]        
+    },
+    notes: {
         type: String,
         trim: true
-    },
-    wokeUpAt: {
-        type: Date  
-    },
-    wokeUpNotes: {
-        type: String,
-        trim: true
-    },
-    durationMinutes: {
-        type: Number,
-        min: 0
     },
     babyId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Baby',
-        required: true
+        required: true,
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -35,5 +32,5 @@ const SleepSchema = new mongoose.Schema({
 }
 );
 
-const Sleep = mongoose.model('Sleep', SleepSchema);
-module.exports = Sleep;
+const Diaper = mongoose.model('Diaper', DiaperSchema);
+module.exports = Diaper;

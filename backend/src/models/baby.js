@@ -26,7 +26,11 @@ const BabySchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true
     }
-});
+},
+{
+    timestamps: true
+}
+);
 
 BabySchema.index(
     {
