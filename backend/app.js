@@ -7,6 +7,7 @@ const remindersRouter = require('./src/routes/remindersRoutes')
 const babyRouter = require('./src/routes/babyRoutes');
 const feedingRouter = require('./src/routes/feedingsRoutes');
 const sleepRouter = require('./src/routes/sleepRoutes');
+const diaperRouter = require('./src/routes/diaperRoutes');
 
 const errorHandler = require('./src/middleware/errorHandler');
 const auth = require('./src/middleware/authHandler');
@@ -26,6 +27,8 @@ app.use('/babies', auth, babyRouter);
 app.use('/feedings', auth, feedingRouter);
 
 app.use('/sleeps', auth, sleepRouter);
+
+app.use('/diapers', auth, diaperRouter);
 
 app.use('/auth', authRouter);
 
