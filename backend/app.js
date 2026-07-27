@@ -9,6 +9,7 @@ const feedingRouter = require('./src/routes/feedingsRoutes');
 const sleepRouter = require('./src/routes/sleepRoutes');
 const diaperRouter = require('./src/routes/diaperRoutes');
 const growthRouter = require('./src/routes/growthRoutes');
+const vaccinationRouter = require('./src/routes/vaccinationRoutes');
 
 const errorHandler = require('./src/middleware/errorHandler');
 const auth = require('./src/middleware/authHandler');
@@ -32,6 +33,8 @@ app.use('/sleeps', auth, sleepRouter);
 app.use('/diapers', auth, diaperRouter);
 
 app.use('/growths', auth, growthRouter);
+
+app.use('/vaccinations', auth, vaccinationRouter);
 
 app.use('/auth', authRouter);
 
