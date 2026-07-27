@@ -83,6 +83,7 @@ async function getAllVaccinations(req, res, next) {
 
         const total = await Vaccination.countDocuments(filter);
         const vaccinationRecords = await Vaccination.find(filter)
+        .populate("babyId", "name gender dob")
         .sort(sortOptions)
         .skip(skip)
         .limit(pagination.limit);
@@ -107,7 +108,7 @@ async function getVaccinationById(req, res, next) {
         const vaccinationRecord = await Vaccination.findOne({
             _id: vaccinationId,
             userId: req.user.userId
-        })
+        }).populate("babyId", "name gender dob");
         if(!vaccinationRecord) {
             const error = new Error("Vaccination record not found");
             error.statusCode = 404;
