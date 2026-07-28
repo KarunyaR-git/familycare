@@ -17,11 +17,7 @@ async function register(req, res, next) {
                 error.statusCode = 409;
                 return next(error);
             } else {
-                const hashPassword = await bcrypt.hash(req.body.password, 10)
-                const newUser = new User({
-                    ...req.body,
-                    password: hashPassword
-                });
+                const newUser = new User(req.body);
                 await newUser.save();
                 return res.status(201).send('User registered successfully');
             }
