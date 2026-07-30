@@ -11,6 +11,8 @@ const diaperRouter = require('./src/routes/diaperRoutes');
 const growthRouter = require('./src/routes/growthRoutes');
 const vaccinationRouter = require('./src/routes/vaccinationRoutes');
 
+const reportRouter = require('./src/routes/reportRoutes');
+
 const errorHandler = require('./src/middleware/errorHandler');
 const auth = require('./src/middleware/authHandler');
 
@@ -35,6 +37,8 @@ app.use('/diapers', auth, diaperRouter);
 app.use('/growths', auth, growthRouter);
 
 app.use('/vaccinations', auth, vaccinationRouter);
+
+app.use('/api/reports', auth, reportRouter);
 
 app.use('/auth', authRouter);
 
