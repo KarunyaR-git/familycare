@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const Vaccination = require('../models/vaccination');
 const Baby = require('../models/baby');
+const Feeding = require('../models/feeding');
+const Growth = require('../models/growth');
 
 async function getVaccinationReport(req, res, next) {
     try{
@@ -112,7 +114,98 @@ async function getBabyDashboard(req, res, next) {
     }
 }
 
+async function getFeedingSummary(req, res, next) {
+    try {
+        const userId = new mongoose.Types.ObjectId(req.user.userId);
+        const feedingSummary = await Feeding.aggregate([
+            {
+                $match: {
+                    userId
+                }
+            },
+            {
+                $group: {
+                    _id: '$type',
+                    totalFeedings: {
+                        $sum: 1
+                    }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    feedingType: '$_id',
+                    totalFeedings: 1
+                }
+            }
+        ]);
+        return res.status(200).json(feedingSummary);
+    }catch(error) {
+        return next(error);
+    }
+}
+
+async function getGrowthDashboard(req, res, next) {
+    try{
+        const userId = new mongoose.Types.ObjectId(req.user.userId);
+        const growthDashboard = await Growth.aggregate([
+            {
+                $match: {
+                    userId
+                }
+            },
+            {
+                $lookup: {
+                    from: 'babies',
+                    localField: 'babyId',
+                    foreignField: '_id',
+                    as: 'baby'
+                }
+            },
+            {
+                $unwind: '$baby'
+            },
+            {
+                $sort: {
+                    measuredAt: -1
+                }
+            },
+            {
+                $group: {
+                    _id: '$babyId',
+                    babyName: {
+                        $first: '$baby.name'
+                    },
+                    weight: {
+                        $first: '$weight'
+                    },
+                    height: {
+                        $first: '$height'
+                    },
+                    measuredAt: {
+                        $first: '$measuredAt'
+                    }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    babyName: 1,
+                    weight: 1,
+                    height: 1,
+                    measuredAt: 1
+                }
+            }
+        ]);
+        return res.status(200).json(growthDashboard);
+    }catch(error) {
+        return next(error);
+    }    
+}
+
 module.exports = {
     getVaccinationReport,
-    getBabyDashboard
+    getBabyDashboard,
+    getFeedingSummary,
+    getGrowthDashboard
 }
