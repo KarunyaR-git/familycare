@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 
 const app = express();
@@ -49,9 +51,9 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(errorHandler);
 
-mongoose.connect('mongodb://localhost:27017/familycare')
+mongoose.connect(process.env.MONGODB_URI)
 .then(()=>{
-    app.listen(3000, () => {
+    app.listen(process.env.PORT, () => {
         console.log('Server running on port 3000');
     })
 })

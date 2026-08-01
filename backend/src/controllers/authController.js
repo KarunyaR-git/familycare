@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
-const secret_key = 'familycare_Secret';
 
 async function register(req, res, next) {
     const {name, email, password} = req.body;
@@ -46,7 +45,7 @@ async function login(req, res, next) {
                     const options = {
                         expiresIn: '1d'
                     };
-                    const token = jwt.sign(payload, secret_key, options); // jwt.sign() is synchronous so dont need await
+                    const token = jwt.sign(payload, process.env.JWT_SECRET, options); // jwt.sign() is synchronous so dont need await
                     return res.status(200).json({
                         ...payload,
                         token: token

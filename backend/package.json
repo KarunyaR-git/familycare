@@ -10,7 +10,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "RESTful backend API for FamilyCare application built with Node.js, Express and MongoDB.",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",
