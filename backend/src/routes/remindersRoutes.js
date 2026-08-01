@@ -184,7 +184,7 @@ router.put('/:id', updateReminderById);
 /**
  * @swagger
  * /reminders/{id}:
- *   get:
+ *   delete:
  *     summary: Delete reminder record by id
  *     tags:
  *       - Reminders
