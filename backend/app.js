@@ -16,6 +16,9 @@ const reportRouter = require('./src/routes/reportRoutes');
 const errorHandler = require('./src/middleware/errorHandler');
 const auth = require('./src/middleware/authHandler');
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./src/config/swagger');
+
 const mongoose = require('mongoose');
 
 app.use(express.json());
@@ -41,6 +44,8 @@ app.use('/vaccinations', auth, vaccinationRouter);
 app.use('/api/reports', auth, reportRouter);
 
 app.use('/auth', authRouter);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(errorHandler);
 
