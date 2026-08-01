@@ -30,12 +30,13 @@ async function getAllReminders(req, res, next) {
         const pagination = getPagination(req.query);
         const skip = (pagination.page - 1)*pagination.limit;
 
-        const reminders = await Reminder.find(filter)
-        .sort(sortOptions)
-        .skip(skip)
-        .limit(pagination.limit);
-
-        const total = await Reminder.countDocuments(filter);
+        const [total, reminders] = await Promise.all([
+            Reminder.countDocuments(filter),
+            Reminder.find(filter)
+                .sort(sortOptions)
+                .skip(skip)
+                .limit(pagination.limit)
+        ]);
         const response = getPaginationMeta(total, pagination)
         response.data = reminders;
 

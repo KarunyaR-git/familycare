@@ -84,11 +84,13 @@ async function getAllDiapers(req, res, next) {
         const pagination = getPagination(req.query);
         const skip = (pagination.page - 1) * pagination.limit;
 
-        const total = await Diaper.countDocuments(filter);
-        const diapers = await Diaper.find(filter)
-        .sort(sortOptions)
-        .skip(skip)
-        .limit(pagination.limit);
+        const [total, diapers] = await Promise.all([
+            Diaper.countDocuments(filter),
+            Diaper.find(filter)
+                .sort(sortOptions)
+                .skip(skip)
+                .limit(pagination.limit)
+        ]);
 
         const response = getPaginationMeta(total, pagination);
         response.data = diapers;

@@ -110,11 +110,13 @@ async function getAllSleepRecords(req, res, next) {
         const pagination = getPagination(req.query);
         const skip = (pagination.page - 1)*pagination.limit;
 
-        const total = await Sleep.countDocuments(filter);
-        const sleepRecords = await Sleep.find(filter)
-        .sort(sortOptions)
-        .skip(skip)
-        .limit(pagination.limit);
+        const [total, sleepRecords] = await Promise.all([
+            Sleep.countDocuments(filter),
+            Sleep.find(filter)
+                .sort(sortOptions)
+                .skip(skip)
+                .limit(pagination.limit)
+        ]);
 
         const response = getPaginationMeta(total, pagination);
         response.data = sleepRecords;

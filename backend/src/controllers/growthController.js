@@ -79,11 +79,13 @@ async function getAllGrowthRecords(req, res, next) {
         const pagination = getPagination(req.query);
         const skip = ( pagination.page - 1 ) * pagination.limit;
 
-        const total = await Growth.countDocuments(filter);
-        const growthRecords = await Growth.find(filter)
-        .sort(sortOptions)
-        .skip(skip)
-        .limit(pagination.limit);
+        const [total, growthRecords] = await Promise.all([
+            Growth.countDocuments(filter),
+            Growth.find(filter)
+                .sort(sortOptions)
+                .skip(skip)
+                .limit(pagination.limit)
+        ]);
 
         const response = getPaginationMeta(total, pagination);
         response.data = growthRecords;

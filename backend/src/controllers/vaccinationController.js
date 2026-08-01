@@ -81,12 +81,13 @@ async function getAllVaccinations(req, res, next) {
         const pagination = getPagination(req.query);
         const skip = ( pagination.page - 1 ) * pagination.limit;
 
-        const total = await Vaccination.countDocuments(filter);
-        const vaccinationRecords = await Vaccination.find(filter)
-        .populate("babyId", "name gender dob")
-        .sort(sortOptions)
-        .skip(skip)
-        .limit(pagination.limit);
+        const [total, vaccinationRecords] = await Promise.all([
+            Vaccination.countDocuments(filter),
+            Vaccination.find(filter)
+                .sort(sortOptions)
+                .skip(skip)
+                .limit(pagination.limit)
+        ]);
 
         const response = getPaginationMeta(total, pagination);
         response.data = vaccinationRecords;

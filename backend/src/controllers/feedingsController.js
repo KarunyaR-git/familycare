@@ -52,11 +52,13 @@ async function getAllFeedings(req, res, next) {
         const pagination = getPagination(req.query);
         const skip = (pagination.page - 1)*pagination.limit;
 
-        const total = await Feeding.countDocuments(filter);
-        const feedings = await Feeding.find(filter)
-        .sort(sortOptions)
-        .skip(skip)
-        .limit(pagination.limit)
+        const [total, feedings] = await Promise.all([
+            Feeding.countDocuments(filter),
+            Feeding.find(filter)
+                .sort(sortOptions)
+                .skip(skip)
+                .limit(pagination.limit)
+        ]);
 
         const response = getPaginationMeta(total, pagination);
         response.data = feedings;
