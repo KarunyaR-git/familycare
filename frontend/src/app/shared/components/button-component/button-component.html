@@ -1,0 +1,6 @@
+<button [type]="type" [disabled]="disabled" (click)="onClick($event)">
+     @if (loading) {
+        <span class="spinner"></span>
+    }
+    {{text}}
+</button>

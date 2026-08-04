@@ -1,0 +1,58 @@
+/* ===========================================
+   FamilyCare Design System
+=========================================== */
+
+/* Colors */
+/* Typography */
+/* Border Radius */
+/* Shadows */
+/* Spacing */
+
+:root {
+
+  /* Colors */
+  --primary-color: #4CA6A8;
+  --primary-hover-color: #3D8D8F;
+  --accent-color: #F4B183;
+  --background-color: #F6FBFB;
+  --card-color: #FFFFFF;
+  --text-primary-color: #2C3E50;
+  --text-secondary-color: #7F8C8D;
+  --border-color: #DDE7E7;
+  --success-color: #4CAF50;
+  --error-color: #E74C3C;
+  --warning-color: #F39C12;
+
+  /* Typography */
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 20px;
+  --font-size-xl: 28px;
+
+  /* Border Radius */
+  --border-radius-sm: 6px;
+  --border-radius-md: 10px;
+  --border-radius-lg: 16px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+}
+
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    font-family: var(--font-family);
+}

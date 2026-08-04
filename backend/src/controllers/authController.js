@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/users');
 
 async function register(req, res, next) {
-    const {name, email, password} = req.body;
+    const {name, email, password, age} = req.body;
     if(!name || !email || !password) {
         const error = new Error('Name, email and password are required for registration');
         error.statusCode = 400;
@@ -16,7 +16,12 @@ async function register(req, res, next) {
                 error.statusCode = 409;
                 return next(error);
             } else {
-                const newUser = new User(req.body);
+                const newUser = new User({
+                    name,
+                    email,
+                    password,
+                    age
+                });
                 await newUser.save();
                 return res.status(201).send('User registered successfully');
             }
