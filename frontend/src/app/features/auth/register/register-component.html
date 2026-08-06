@@ -1,0 +1,15 @@
+<div class="register-page">
+    <div class="register-card">
+        <div class="register-header">
+            <h1>Register</h1>
+        </div>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <app-input-component [label]="'Name'" [required]="true" formControlName="name"  [errorMessage]="getErrorMessage('name')"></app-input-component>
+            <app-input-component [label]="'Email'" [required]="true" formControlName="email"  [errorMessage]="getErrorMessage('email')"></app-input-component>
+            <app-input-component [label]="'Password'" [type]="'password'" [required]="true" formControlName="password"  [errorMessage]="getErrorMessage('password')"></app-input-component>
+            <app-input-component [label]="'Confirmed Password'" [type]="'password'" [required]="true" formControlName="confirmedPassword" [errorMessage]="getConfirmPasswordError()"></app-input-component>
+            <app-input-component [label]="'Age'" [type]="'number'" formControlName="age"  [errorMessage]="getErrorMessage('age')"></app-input-component>
+            <app-button-component [type]="'submit'" [text]="'Register'" [disabled]="isDisabled" [loading]="isLoading()"></app-button-component>
+        </form>
+    </div>
+</div>

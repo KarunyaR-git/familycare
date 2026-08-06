@@ -23,7 +23,9 @@ async function register(req, res, next) {
                     age
                 });
                 await newUser.save();
-                return res.status(201).send('User registered successfully');
+                return res.status(201).json({
+                    message: "User registered successfully"
+                });
             }
         } catch(error) {
             return next(error);
