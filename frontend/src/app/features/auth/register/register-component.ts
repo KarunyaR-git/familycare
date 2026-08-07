@@ -6,6 +6,8 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { passwordMatchValidator } from '../../../shared/validators/password-match.validator';
 import { emailValidator } from '../../../shared/validators/email.validator';
+import { NotificationService } from '../../../core/services/notification-service';
+import { getErrorMessage } from '../../../shared/utils/error-handler';
 
 @Component({
   selector: 'register-component',
@@ -16,7 +18,7 @@ import { emailValidator } from '../../../shared/validators/email.validator';
 export class RegisterComponent {
   registerForm;
   isLoading = signal(false);
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router){
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private notificationService: NotificationService){
     this.registerForm = this.fb.group({
       name: ['', [Validators.required]],
       email: ['',[Validators.required, emailValidator]],
@@ -44,14 +46,16 @@ export class RegisterComponent {
       this.authService.register(body).subscribe({
         next:(response) => {
           this.isLoading.set(false);
-          console.log(response);
-          //Notification to inform registered succssfully
+          this.notificationService.success('Registration successful');
           this.router.navigate(['/login']);
         },
         error:(error) => {
-          console.log("error", error);
           this.isLoading.set(false);
-          //Notification to inform try again
+          if (error.status === 409) {
+            this.notificationService.error('Email already exists');
+            return;
+          }
+          this.notificationService.error(getErrorMessage(error));
         }
       })
     }

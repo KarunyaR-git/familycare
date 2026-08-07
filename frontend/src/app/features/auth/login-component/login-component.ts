@@ -5,6 +5,8 @@ import { ButtonComponent } from '../../../shared/components/button-component/but
 import { AuthService } from '../../../core/services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { emailValidator } from '../../../shared/validators/email.validator';
+import { NotificationService } from '../../../core/services/notification-service';
+import { getErrorMessage } from '../../../shared/utils/error-handler';
 
 @Component({
   selector: 'login-component',
@@ -15,7 +17,7 @@ import { emailValidator } from '../../../shared/validators/email.validator';
 export class LoginComponent {
   loginForm;
   isLoading = signal(false);
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router){
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private notificationService: NotificationService){
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, emailValidator]],
       password: ['', [Validators.required, Validators.minLength(7)]]
@@ -29,11 +31,16 @@ export class LoginComponent {
         next:(response)=>{
           this.isLoading.set(false);
           this.authService.saveToken(response.token)
+          this.notificationService.success('Login successful');
           this.router.navigate(['/home']);
         },
         error:(error)=>{
           this.isLoading.set(false);
-          console.log(error);
+          if (error.status === 409) {
+            this.notificationService.error('Email already exists');
+            return;
+          }
+          this.notificationService.error(getErrorMessage(error));
         }
       });
       
