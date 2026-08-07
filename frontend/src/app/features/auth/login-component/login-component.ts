@@ -18,7 +18,7 @@ export class LoginComponent {
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router){
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, emailValidator]],
-      password: ['', [Validators.required]]
+      password: ['', [Validators.required, Validators.minLength(7)]]
     });
     
   }
@@ -39,12 +39,33 @@ export class LoginComponent {
       
     }
   }
+  getErrorMessage(controlName: string): string {
+    const control = this.loginForm.get(controlName);
+    if (!control || !control.touched || !control.errors) {
+      return '';
+    }
+    if (control.errors['required']) {
+      const name = controlName === 'email' ? 'Email' : 'Password';
+      return `${name} is required`;
+    }
+    if (control.errors['emailInvalid']) {
+      return 'Enter a valid email address';
+    }
+    if (control.errors['minlength']) {
+      const requiredLength = control.errors['minlength'].requiredLength;
+      return `Minimum ${requiredLength} characters required`;
+    }
+    return '';
+  }
   get isDisabled() {
     return !this.loginForm.valid || this.isLoading();
   }
 
   get login() {
     const form = this.loginForm as FormGroup;
-    return form.value;
+    const value = form.value
+    value.email = value.email.trim();
+    value.password = value.password.trim();
+    return value;
   }
 }

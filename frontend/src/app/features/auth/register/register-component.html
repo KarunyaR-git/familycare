@@ -1,7 +1,8 @@
 <div class="register-page">
     <div class="register-card">
         <div class="register-header">
-            <h1>Register</h1>
+            <h2>Create your account</h2>
+            <p>Start managing your family's care.</p>
         </div>
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
             <app-input-component [label]="'Name'" [required]="true" formControlName="name"  [errorMessage]="getErrorMessage('name')"></app-input-component>
@@ -11,5 +12,9 @@
             <app-input-component [label]="'Age'" [type]="'number'" formControlName="age"  [errorMessage]="getErrorMessage('age')"></app-input-component>
             <app-button-component [type]="'submit'" [text]="'Register'" [disabled]="isDisabled" [loading]="isLoading()"></app-button-component>
         </form>
+        <div class="login-link">
+            <span>Already have an account?</span>
+            <a routerLink="/login">Login</a>
+        </div>
     </div>
 </div>

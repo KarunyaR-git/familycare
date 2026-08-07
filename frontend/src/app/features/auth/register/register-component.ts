@@ -2,14 +2,14 @@ import { Component, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputComponent } from '../../../shared/components/input-component/input-component';
 import { ButtonComponent } from '../../../shared/components/button-component/button-component';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { passwordMatchValidator } from '../../../shared/validators/password-match.validator';
 import { emailValidator } from '../../../shared/validators/email.validator';
 
 @Component({
   selector: 'register-component',
-  imports: [ReactiveFormsModule, InputComponent, ButtonComponent],
+  imports: [ReactiveFormsModule, InputComponent, ButtonComponent, RouterLink],
   templateUrl: './register-component.html',
   styleUrl: './register-component.css',
 })
@@ -22,7 +22,7 @@ export class RegisterComponent {
       email: ['',[Validators.required, emailValidator]],
       password: ['', [Validators.required, Validators.minLength(7)]],
       confirmedPassword: ['', [Validators.required, Validators.minLength(7)]],
-      age: [0, [Validators.min(0),Validators.max(120)]]
+      age: [null, [Validators.min(0),Validators.max(120)]]
     },
     {
       validators: passwordMatchValidator
@@ -35,7 +35,11 @@ export class RegisterComponent {
     if(this.registerForm.valid) {
       this.isLoading.set(true);
       const body:any = this.registerForm.value;
-      body.age = parseInt(body.age);
+      body.name = body.name.trim();
+      body.email = body.email.trim();
+      if(body.age) {
+        body.age = parseInt(body.age);
+      }      
       delete body.confirmedPassword;
       this.authService.register(body).subscribe({
         next:(response) => {
@@ -55,30 +59,24 @@ export class RegisterComponent {
 
   getErrorMessage(controlName: string): string {
     const control = this.registerForm.get(controlName);
-
     if (!control || !control.touched || !control.errors) {
       return '';
     }
-
     if (control.errors['required']) {
       return `${this.getFieldLabel(controlName)} is required`;
     }
-
     if (control.errors['emailInvalid']) {
       return 'Enter a valid email address';
     }
-
     if (control.errors['minlength']) {
       const requiredLength = control.errors['minlength'].requiredLength;
       return `Minimum ${requiredLength} characters required`;
     }
-
     if (control.errors['min']) {
-      return 'Value is below the allowed minimum';
+      return 'Age cannot be less than 0';
     }
-
     if (control.errors['max']) {
-      return 'Value exceeds the allowed maximum';
+      return 'Age cannot be greater than 120';
     }
 
     return '';
@@ -108,7 +106,8 @@ export class RegisterComponent {
     }
 
     if (control.errors?.['minlength']) {
-      return 'Minimum 7 characters required';
+      const requiredLength = control.errors['minlength'].requiredLength;
+      return `Minimum ${requiredLength} characters required`;
     }
 
     if (this.registerForm.errors?.['passwordMismatch']) {

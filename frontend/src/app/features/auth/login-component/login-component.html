@@ -6,8 +6,8 @@
             <p>Sign in to continue managing your family's care.</p>
         </div>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <app-input-component [label]="'Email'" [required]="true" formControlName="email"></app-input-component>
-            <app-input-component [label]="'Password'" [type]="'password'" [required]="true" formControlName="password"></app-input-component>
+            <app-input-component [label]="'Email'" [required]="true" formControlName="email" [errorMessage]="getErrorMessage('email')"></app-input-component>
+            <app-input-component [label]="'Password'" [type]="'password'" [required]="true" formControlName="password" [errorMessage]="getErrorMessage('password')"></app-input-component>
             <app-button-component [type]="'submit'" [text]="'Login'" [disabled]="isDisabled" [loading]="isLoading()"></app-button-component>
         </form>
         <div class="register-link">

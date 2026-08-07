@@ -1,12 +1,8 @@
 .register-page{
     min-height:100vh;
-
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
     background-color:var(--background-color);
 }
 
@@ -17,4 +13,25 @@
   background-color: var(--card-color);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-md);
+}
+
+.login-link {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.login-link span {
+    color: var(--text-secondary);
+}
+
+.login-link a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 6px;
+    cursor: pointer;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
 }
