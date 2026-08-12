@@ -15,6 +15,7 @@ const growthRouter = require('./src/routes/growthRoutes');
 const vaccinationRouter = require('./src/routes/vaccinationRoutes');
 
 const reportRouter = require('./src/routes/reportRoutes');
+const homeRouter = require('./src/routes/homeRoutes');
 
 const errorHandler = require('./src/middleware/errorHandler');
 const auth = require('./src/middleware/authHandler');
@@ -50,6 +51,8 @@ app.use('/growths', auth, growthRouter);
 app.use('/vaccinations', auth, vaccinationRouter);
 
 app.use('/api/reports', auth, reportRouter);
+
+app.use('/home/dashboard', auth, homeRouter);
 
 app.use('/auth', authRouter);
 
