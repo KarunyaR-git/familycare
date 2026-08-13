@@ -1,0 +1,25 @@
+<header class="header">
+    <div class="header-top">
+        <div class="brand">
+            <span class="brand-icon">♥</span>
+            <span class="brand-name">FamilyCare</span>
+        </div>
+
+        <div class="header-actions">
+            <app-button-component
+            text="+ Add Baby"
+            (clicked)="onAddBaby()">
+            </app-button-component>
+
+            <app-button-component
+            text="Logout"
+            variant="secondary"
+            (clicked)="onLogout()">
+            </app-button-component>
+        </div>
+  </div>
+</header>
+<section class="welcome">
+    <h1>{{greeting}}!</h1>
+    <p>Here's what's happening with your little ones today</p>
+</section>

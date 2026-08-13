@@ -151,7 +151,7 @@ async function getBabyDetails(filter) {
 
             Diaper.find(filter)
             .sort({ changedAt: -1 })
-            .select('changedAt type notes')
+            .select('changedAt type')
             .limit(3),
 
             Sleep.find(filter)

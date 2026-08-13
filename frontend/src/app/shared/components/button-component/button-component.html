@@ -1,4 +1,4 @@
-<button [type]="type" [disabled]="disabled" (click)="onClick($event)">
+<button [type]="type" [disabled]="disabled" [class.secondary]="variant === 'secondary'" (click)="onClick($event)">
      @if (loading) {
         <span class="spinner"></span>
     }

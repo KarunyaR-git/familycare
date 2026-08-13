@@ -1,0 +1,32 @@
+<div class="dropdown-container">
+
+  @if (label) {
+    <label class="dropdown-label">
+      {{ label }}
+    </label>
+  }
+
+  <div class="dropdown-wrapper">
+
+    <select
+        class="dropdown"
+        [value]="value"
+        [disabled]="disabled"
+        (change)="onValueChange($event)"
+        (blur)="onBlur()"
+    >
+      <option value="" disabled>
+        {{ placeholder }}
+      </option>
+
+      @for (option of options; track option.value) {
+        <option [value]="option.value">
+          {{ option.label }}
+        </option>
+      }
+    </select>
+
+    <span class="dropdown-arrow">⌄</span>
+
+  </div>
+</div>

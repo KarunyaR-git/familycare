@@ -11,6 +11,7 @@ export class ButtonComponent {
   @Input() type = 'button';
   @Input() disabled = false;
   @Input() loading = false;
+  @Input() variant: 'primary' | 'secondary' = 'primary';
 
   @Output() clicked = new EventEmitter();
 

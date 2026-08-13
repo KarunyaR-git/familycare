@@ -1,1 +1,4 @@
-<p>home-component works!</p>
+<app-header-component></app-header-component>
+@if (!loading()) {
+    <app-baby-dashboard-component [details] = "babyDetails" [babies] = "babies" (babyChanged)="onBabyChange($event)"></app-baby-dashboard-component>
+}

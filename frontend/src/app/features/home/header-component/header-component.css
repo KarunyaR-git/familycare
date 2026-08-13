@@ -1,0 +1,73 @@
+.header {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background-color: var(--card-color);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+}
+
+.welcome {
+  padding: var(--spacing-lg);
+  background-color: var(--background-color);
+}
+
+.welcome h1 {
+  margin: 0;
+  color: var(--text-primary-color);
+  font-size: var(--font-size-xl);
+}
+
+.welcome p {
+  margin: var(--spacing-xs) 0 0;
+  color: var(--text-secondary-color);
+  font-size: var(--font-size-sm);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.brand-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: var(--card-color);
+
+  font-size: var(--font-size-md);
+}
+
+.brand-name {
+  color: var(--text-primary-color);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+@media (max-width: 600px) {
+  .header {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .brand-name {
+    font-size: var(--font-size-md);
+  }
+}

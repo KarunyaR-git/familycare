@@ -41,3 +41,15 @@ button:disabled {
         transform: rotate(360deg);
     }
 }
+
+button.secondary {
+  background-color: var(--card-color);
+  color: var(--text-primary-color);
+  border: 1px solid var(--border-color);
+}
+
+button.secondary:hover:not(:disabled) {
+  background-color: var(--card-color);
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+} 
