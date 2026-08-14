@@ -1,3 +1,29 @@
 .baby-dashboard {
   padding: var(--spacing-lg);
 }
+
+.dashboard-card {
+  padding: var(--spacing-lg);
+
+  background-color: var(--card-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.dashboard-card + .dashboard-card {
+  margin-top: var(--spacing-lg);
+}
+
+.dashboard-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  background-color: var(--card-hover-color);
+  border-color: var(--accent-color);
+}

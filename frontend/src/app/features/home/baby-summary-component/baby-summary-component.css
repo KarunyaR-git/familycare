@@ -1,0 +1,45 @@
+.baby-summary-title {
+  margin: 0 0 var(--spacing-md);
+  color: var(--text-primary-color);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+}
+
+.baby-summary-content {
+    display: flex;
+    flex-direction: column;
+}
+.activity-summary {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.latest-summary {
+  display: flex;
+  gap: var(--spacing-xl);
+}
+
+.latest-summary .summary-card {
+  min-width: 160px;
+}
+
+.empty-state {
+  color: var(--text-secondary-color);
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  font-style: italic;
+}
+
+.summary-card p {
+  margin: 0 0 var(--spacing-sm);
+  color: var(--text-secondary-color);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.summary-value {
+  color: var(--text-primary-color);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+}

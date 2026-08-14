@@ -1,3 +1,15 @@
 <div class="baby-dashboard">
-    <app-dropdown-component [label]="'Select Baby'" [placeholder]="'Select baby'" [options]="babiesLists" [ngModel]="selectedBabyId" (ngModelChange)="onBabyChange($event)"></app-dropdown-component>
+    <div class="dashboard-card">
+        <p class="section-title">Select Baby</p>
+        <app-dropdown-component [placeholder]="'Select baby'" [options]="babiesLists" [ngModel]="selectedBabyId" (ngModelChange)="onBabyChange($event)"></app-dropdown-component>
+    </div>
+    <div class="dashboard-card">
+        <app-quick-actions-component></app-quick-actions-component>
+    </div>
+    <div class="dashboard-card">
+        <app-baby-summary-component [details]="details"></app-baby-summary-component>
+    </div>
+    <div class="dashboard-card">
+        <app-latest-activities-component [activities]="details?.latestActivities ?? []"></app-latest-activities-component>
+    </div>
 </div>

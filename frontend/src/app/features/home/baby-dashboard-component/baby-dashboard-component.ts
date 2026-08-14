@@ -5,10 +5,13 @@ import { DropdownComponent, DropdownOption } from '../../../shared/components/dr
 import { mapDropdownOptions } from '../../../shared/utils/dropdown-options-helper';
 import { SelectedBabyService } from '../../../core/services/selected-baby-service';
 import { FormsModule } from '@angular/forms';
+import { QuickActionsComponent } from '../quick-actions-component/quick-actions-component';
+import { BabySummaryComponent } from '../baby-summary-component/baby-summary-component';
+import { LatestActivitiesComponent } from '../latest-activities-component/latest-activities-component';
 
 @Component({
   selector: 'app-baby-dashboard-component',
-  imports: [DropdownComponent, FormsModule],
+  imports: [DropdownComponent, FormsModule, QuickActionsComponent, BabySummaryComponent, LatestActivitiesComponent],
   templateUrl: './baby-dashboard-component.html',
   styleUrl: './baby-dashboard-component.css',
 })

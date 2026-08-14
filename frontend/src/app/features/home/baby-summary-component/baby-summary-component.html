@@ -1,0 +1,55 @@
+<div class="baby-summary">
+  <p class="section-title">Today's Summary</p>
+
+  <div class="baby-summary-content">
+        <div class="activity-summary">
+            <div class="summary-card">
+                <p>Feeding</p>
+                <span class="summary-value">{{ details?.feedingCount ?? 0 }}</span>
+            </div>
+
+            <div class="summary-card">
+                <p>Diaper</p>
+                <span class="summary-value">{{ details?.diaperCount ?? 0 }}</span>
+            </div>
+
+            <div class="summary-card">
+                <p>Sleep</p>
+                <span class="summary-value">
+                    {{ details?.sleep?.sessions ?? 0 }} sessions /
+                    {{ details?.sleep?.totalDuration ?? 0 }} min
+                </span>
+            </div>
+        </div>
+
+        <div class="latest-summary">
+            <div class="summary-card">
+                <p>Latest Growth</p>
+
+                @if (details?.latestGrowth) {
+                    <span class="summary-value">{{ details?.latestGrowth?.weight }} kg</span>
+                    <span class="summary-value"> · {{ details?.latestGrowth?.height }} cm</span>
+                    <span class="summary-value">
+                    · {{ details?.latestGrowth?.measuredAt | date:'mediumDate' }}
+                    </span>
+                } @else {
+                    <span class="empty-state">No growth record yet</span>
+                }
+            </div>
+
+            <div class="summary-card">
+                <p>Latest Vaccination</p>
+
+                @if (details?.latestVaccination) {
+                    <span class="summary-value">{{ details?.latestVaccination?.name }}</span>
+                    <span class="summary-value"> · Dose {{ details?.latestVaccination?.doseNumber }}</span>
+                    <span class="summary-value">
+                    · {{ details?.latestVaccination?.vaccineAt | date:'mediumDate' }}
+                    </span>
+                } @else {
+                    <span class="empty-state">No vaccination record yet</span>
+                }
+            </div>
+        </div>
+  </div>
+</div>

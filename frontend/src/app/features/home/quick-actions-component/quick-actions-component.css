@@ -1,0 +1,38 @@
+.quick-actions-title {
+  margin: 0 0 var(--spacing-sm);
+  color: var(--text-primary-color);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+mat-chip {
+  -mat-chip-outline-color: var(--border-color);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.quick-action-content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+}
+
+.quick-action-content mat-icon {
+  margin: 0;
+  color: var(--primary-color);
+}
+
+.quick-action-label {
+  line-height: 1;
+  margin-top: var(--spacing-xs);
+  color: var(--text-primary-color);
+}
+
+mat-chip:hover {
+  background-color: var(--primary-hover-color);
+}
+
+mat-chip:hover .quick-action-content mat-icon,
+mat-chip:hover .quick-action-label {  
+  color: var(--card-color);
+}

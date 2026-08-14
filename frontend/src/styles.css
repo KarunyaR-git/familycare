@@ -16,6 +16,7 @@
   --accent-color: #F4B183;
   --background-color: #F6FBFB;
   --card-color: #FFFFFF;
+  --card-hover-color: #FFF8F3;
   --text-primary-color: #2C3E50;
   --text-secondary-color: #7F8C8D;
   --border-color: #DDE7E7;
@@ -81,4 +82,11 @@ body {
 .snackbar-warning,
 .snackbar-info {
   --mat-snack-bar-button-color: white;
+}
+
+.section-title {
+  margin: 0 0 var(--spacing-md);
+  color: var(--text-primary-color);
+  font-size: var(--font-size-md);
+  font-weight: 700;
 }

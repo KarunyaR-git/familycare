@@ -28,16 +28,19 @@ export interface HomeDashboardBabyDetails {
         totalDuration: number;
     };
 
-    latestActivities: {
-        _id: string;
-        wokeUpAt?: string | null;
-        type?: string;
-        durationMinutes?: number | null;
-        weight?: number;
-        height?: number;
-        name?: string;
-        doseNumber?: number;
-        activityType: string;
-        activityAt: string;
-    }[];
+    latestActivities: LatestBabyActivitiesDetails[]
+    
+}
+
+export interface LatestBabyActivitiesDetails {
+    _id: string;
+    wokeUpAt?: string | null;
+    type?: string;
+    durationMinutes?: number | null;
+    weight?: number;
+    height?: number;
+    name?: string;
+    doseNumber?: number;
+    activityType: string;
+    activityAt: string;
 }
