@@ -1,0 +1,97 @@
+<div class="reminder-page">
+    <div class="reminders-page-title">
+        <button
+            type="button"
+            class="back-button"
+            (click)="onBackToHome()">
+            <mat-icon>chevron_left</mat-icon>
+            Back            
+        </button>
+        <h3>Reminders</h3>
+    </div>
+    <div class="reminders-page-options">
+        <app-dropdown-component [label]="'Status'" [placeholder]="'Status'" [options]="statusOptions" [ngModel]="options.status" (ngModelChange)="onStatusChange($event)"></app-dropdown-component>
+        <app-dropdown-component [label]="'SortBy'" [placeholder]="'SortBy'" [options]="sortByOptions" [ngModel]="options.sortBy" (ngModelChange)="onSortByChange($event)"></app-dropdown-component>
+        <app-dropdown-component [label]="'Order'" [placeholder]="'Order'" [options]="orderOptions" [ngModel]="options.order" (ngModelChange)="onOrderChange($event)"></app-dropdown-component>
+    </div>
+    <div class="reminders-page-content">
+        @if (loading()) {
+            <app-skeleton-component
+            variant="card"
+            [count]="5">
+            </app-skeleton-component>
+        } @else {
+            @if (lists.length === 0) {
+                <span class="empty-state">No {{options.status}} reminders</span>
+            } @else {
+                @for (reminder of lists; track reminder._id) {
+                    <div class="reminder-card">
+                        <div class="reminder-card-header">
+                            <p class="reminder-card-title">{{reminder.title}}</p>
+                            <p class="reminder-card-status" [ngClass]="{'warning-status': reminder.status === 'pending', 'success-status': reminder.status === 'completed'}">{{statusLabel[reminder.status]}}</p>
+                        </div>
+                        <div class="reminder-card-body">
+                            @if (reminder.description) {
+                                <div>{{reminder.description}}</div>
+                            }                        
+                            <div> 
+                                <span>{{reminder.reminderAt | date:'mediumDate'}}</span>
+                                <span> . {{reminder.reminderAt | date:'shortTime'}}</span>
+                            </div>
+                            @if (reminder.reminderBefore) {
+                                <div>
+                                    <span>Remind {{reminder.reminderBefore}} minutes before</span>
+                                </div>
+                            }
+                        </div>
+                        <div class="reminder-card-footer">
+                            <button
+                                type="button"
+                                class="edit-button"
+                                (click)="onEditReminder(reminder)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            @if (reminder.status === 'pending') {
+                                <button
+                                type="button"
+                                class="complete-button"
+                                (click)="onMarkCompleteReminder(reminder)">
+                                    Mark Completed             
+                                </button>
+                            }                        
+                            <button
+                                type="button"
+                                class="delete-button"
+                                (click)="onDeleteReminder(reminder)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                }
+            }    
+        }
+        
+    </div>
+    @if (lists.length > 0) {
+        <div class="reminders-page-navigations">
+            @if (options.page > 1) {
+                <button
+                type="button"
+                class="navigation-button"
+                (click)="onClickPreviousPage()">
+                    Previous             
+                </button>
+            } 
+            <span>{{options.page}} / {{options.totalPages}}</span>
+            @if (options.page < options.totalPages) {
+                <button
+                type="button"
+                class="navigation-button"
+                (click)="onClickNextPage()">
+                    Next             
+                </button>
+            } 
+        </div>
+    }
+    
+</div>

@@ -1,0 +1,25 @@
+<div class="reminder-card">
+    <p class="section-title">Reminders</p>
+    <div class="reminder-content">
+        @if (count!==0) {
+            <p>{{count}} pending reminder{{ count === 1 ? '' : 's' }}</p>
+        } @else {
+            <span class="empty-state">No pending reminders</span>
+        }        
+        <div class="reminder-actions">
+            <button
+                type="button"
+                class="add-reminder"
+                (click)="onAddReminder()">
+                + Add Reminder
+            </button>
+            <button
+                type="button"
+                class="view-all-reminders"
+                (click)="onViewAllReminders()">
+                View All
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+        </div>
+    </div>    
+</div>

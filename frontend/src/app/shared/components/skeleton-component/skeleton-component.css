@@ -1,0 +1,112 @@
+.skeleton-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+
+/* Common skeleton */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--border-color) 25%,
+    var(--card-hover-color) 50%,
+    var(--border-color) 75%
+  );
+
+  background-size: 200% 100%;
+  border-radius: var(--border-radius-sm);
+
+  animation: skeleton-loading 1.2s infinite;
+}
+
+
+/* Card */
+
+.skeleton-card {
+  padding: var(--spacing-lg);
+
+  background-color: var(--card-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.skeleton-title {
+  width: 35%;
+  height: 18px;
+  margin-bottom: var(--spacing-md);
+}
+
+.skeleton-line {
+  width: 75%;
+  height: 14px;
+  margin-bottom: var(--spacing-sm);
+}
+
+.skeleton-line.short {
+  width: 50%;
+}
+
+.skeleton-actions {
+  width: 40%;
+  height: 14px;
+  margin-top: var(--spacing-lg);
+}
+
+
+/* List */
+
+.skeleton-list-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+
+  padding: var(--spacing-md) 0;
+
+  border-bottom: 1px solid var(--border-color);
+}
+
+.skeleton-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.skeleton-list-content {
+  flex: 1;
+}
+
+
+/* Form */
+
+.skeleton-form-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.skeleton-label {
+  width: 25%;
+  height: 14px;
+}
+
+.skeleton-input {
+  width: 100%;
+  height: 44px;
+}
+
+
+/* Animation */
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}

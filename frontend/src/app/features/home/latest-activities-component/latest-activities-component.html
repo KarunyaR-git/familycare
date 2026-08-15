@@ -1,1 +1,87 @@
-<p>latest-activities-component works!</p>
+<div class="latest-activities">
+
+  <div class="section-header">
+    <p class="section-title">Latest Activities</p>
+
+    <button
+        type="button"
+        class="view-activities"
+        (click)="onViewTodayActivities()">
+        View Today's Activity
+        <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+
+  @if (activities.length === 0) {
+    <span class="empty-state">No recent activities</span>
+  }
+
+  @for (activity of activities; track activity._id) {
+    <div class="latest-activity-row">
+
+      <div class="activity-header">
+        <mat-icon>
+          {{ activityIcon[activity.activityType] }}
+        </mat-icon>
+
+        <p class="activity-title">
+          {{ activityLabel[activity.activityType] }}
+        </p>
+      </div>
+
+      @if (activity.activityType === 'sleep') {
+
+        <span class="activity-detail">
+          {{ activity.activityAt | date:'shortTime' }}
+          · {{ activity.activityAt | date:'mediumDate' }}
+
+          @if (activity.wokeUpAt) {
+            →
+            {{ activity.wokeUpAt | date:'shortTime' }}
+            · {{ activity.wokeUpAt | date:'mediumDate' }}
+
+            @if (activity.durationMinutes != null) {
+              · {{ activity.durationMinutes }} min
+            }
+          }
+        </span>
+
+      } @else if (activity.activityType === 'wakeUp') {
+
+        <span class="activity-detail">
+          {{ activity.activityAt | date:'shortTime' }}
+          · {{ activity.activityAt | date:'mediumDate' }}
+        </span>
+
+      } @else if (activity.activityType === 'growth') {
+
+        <span class="activity-detail">
+          {{ activity.weight }} kg
+          · {{ activity.height }} cm
+          · {{ activity.activityAt | date:'shortTime' }}
+          · {{ activity.activityAt | date:'mediumDate' }}
+        </span>
+
+      } @else if (activity.activityType === 'vaccination') {
+
+        <span class="activity-detail">
+          {{ activity.name }}
+          · Dose {{ activity.doseNumber }}
+          · {{ activity.activityAt | date:'shortTime' }}
+          · {{ activity.activityAt | date:'mediumDate' }}
+        </span>
+
+      } @else {
+
+        <span class="activity-detail">
+          {{ activity.type }}
+          · {{ activity.activityAt | date:'shortTime' }}
+          · {{ activity.activityAt | date:'mediumDate' }}
+        </span>
+
+      }
+
+    </div>
+  }
+
+</div>

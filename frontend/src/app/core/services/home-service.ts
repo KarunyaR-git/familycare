@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
-import { HomeDashboard, HomeDashboardBabyDetails } from '../models/home-dasboard-response';
+import { HomeDashboard, HomeDashboardBabyDetails } from '../models/home-dasboard-response.model';
 import { Observable } from 'rxjs';
 
 @Injectable({

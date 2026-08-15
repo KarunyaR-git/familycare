@@ -1,0 +1,36 @@
+<div class="skeleton-container">
+
+  @for (item of items; track $index) {
+
+    @if (variant === 'card') {
+
+      <div class="skeleton-card">
+        <div class="skeleton skeleton-title"></div>
+        <div class="skeleton skeleton-line"></div>
+        <div class="skeleton skeleton-line short"></div>
+        <div class="skeleton skeleton-actions"></div>
+      </div>
+
+    } @else if (variant === 'list') {
+
+      <div class="skeleton-list-item">
+        <div class="skeleton skeleton-icon"></div>
+
+        <div class="skeleton-list-content">
+          <div class="skeleton skeleton-title"></div>
+          <div class="skeleton skeleton-line"></div>
+        </div>
+      </div>
+
+    } @else if (variant === 'form') {
+
+      <div class="skeleton-form-item">
+        <div class="skeleton skeleton-label"></div>
+        <div class="skeleton skeleton-input"></div>
+      </div>
+
+    }
+
+  }
+
+</div>

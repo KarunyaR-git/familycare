@@ -206,6 +206,10 @@ function normalizeActivities(activities) {
             activityType = 'sleep';
             activityAt = obj.sleptAt;
             delete obj.sleptAt;
+        }else if(obj.wokeUpAt){
+            activityType = 'wakeUp';
+            activityAt = obj.wokeUpAt;
+            delete obj.wokeUpAt;
         }else if(obj.measuredAt){
             activityType = 'growth';
             activityAt = obj.measuredAt;

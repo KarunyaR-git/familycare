@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
-import { HomeDashboardBabyDetails } from '../../../core/models/home-dasboard-response';
+import { HomeDashboardBabyDetails } from '../../../core/models/home-dasboard-response.model';
 import { BabySummary } from '../../../core/models/baby-summary.model';
 import { DropdownComponent, DropdownOption } from '../../../shared/components/dropdown-component/dropdown-component';
 import { mapDropdownOptions } from '../../../shared/utils/dropdown-options-helper';
@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { QuickActionsComponent } from '../quick-actions-component/quick-actions-component';
 import { BabySummaryComponent } from '../baby-summary-component/baby-summary-component';
 import { LatestActivitiesComponent } from '../latest-activities-component/latest-activities-component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-baby-dashboard-component',
@@ -24,7 +25,7 @@ export class BabyDashboardComponent implements OnInit{
   babiesLists:DropdownOption[] = [];
   selectedBabyId = '';
 
-  constructor(private selectedBabyService: SelectedBabyService) {}
+  constructor(private selectedBabyService: SelectedBabyService, private router: Router) {}
 
   ngOnInit() {
     this.babiesLists = mapDropdownOptions(this.babies);
@@ -43,5 +44,9 @@ export class BabyDashboardComponent implements OnInit{
     }
 
     this.babyChanged.emit(babyId);
+  }
+
+  onViewTodayActivities(): void {
+    this.router.navigate(['/home/activities']);
   }
 }

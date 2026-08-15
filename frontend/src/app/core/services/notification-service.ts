@@ -32,8 +32,6 @@ export class NotificationService {
 
     const className = `snackbar-${type}`;
 
-    console.log(className);   // <-- what does this print?
-
     this.snackBar.open(message, 'Close', {
       duration: this.duration,
       horizontalPosition: this.horizontalPosition,
@@ -41,14 +39,4 @@ export class NotificationService {
       panelClass: className
     });
   }
-//   private show(message: string, type: NotificationType): void {
-//   const ref = this.snackBar.open(message, 'Close', {
-//     duration: this.duration,
-//     horizontalPosition: this.horizontalPosition,
-//     verticalPosition: this.verticalPosition,
-//     panelClass: 'snackbar-success'
-//   });
-
-//   console.log(ref);
-// }
 }

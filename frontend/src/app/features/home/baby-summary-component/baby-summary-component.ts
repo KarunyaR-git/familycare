@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { HomeDashboardBabyDetails } from '../../../core/models/home-dasboard-response';
+import { HomeDashboardBabyDetails } from '../../../core/models/home-dasboard-response.model';
 import { DatePipe } from '@angular/common';
 
 @Component({

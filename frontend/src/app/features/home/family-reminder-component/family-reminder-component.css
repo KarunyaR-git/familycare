@@ -1,0 +1,80 @@
+.reminder-card {
+  padding: var(--spacing-lg);
+
+  background-color: var(--card-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.reminder-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  background-color: var(--card-hover-color);
+  border-color: var(--accent-color);
+}
+
+.reminder-content p {
+  margin: 0 0 var(--spacing-sm);
+  color: var(--text-secondary-color);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.reminder-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+.add-reminder {
+    padding: 0;
+    border: none;
+    background: transparent;
+
+    color: var(--primary-color);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.view-all-reminders {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+
+    padding: 0;
+    border: none;
+    background: transparent;
+
+    color: var(--primary-color);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.view-all-reminders:hover, .add-reminder:hover {
+    color: var(--primary-hover-color);
+}
+
+.view-all-reminders mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+}
+
+.empty-state {
+  color: var(--text-secondary-color);
+  font-size: var(--font-size-sm);
+  font-style: italic;
+}
