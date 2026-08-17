@@ -1,0 +1,19 @@
+<div class="modal">
+
+  <div class="modal-header">
+    <h2>{{ title }}</h2>
+
+    <button
+      type="button"
+      class="modal-close"
+      (click)="close()"
+      aria-label="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="modal-content">
+    <ng-content></ng-content>
+  </div>
+
+</div>

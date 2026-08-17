@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { ReminderService } from '../../../core/services/reminder-service';
 import { NotificationService } from '../../../core/services/notification-service';
-import { ReminderData, ReminderResponse } from '../../../core/models/reminder-response.model';
+import { ReminderData, ReminderResponse, UpdateReminderRequest } from '../../../core/models/reminder-response.model';
 import { DropdownComponent } from '../../../shared/components/dropdown-component/dropdown-component';
 import { FormsModule } from '@angular/forms';
 import { getErrorMessage } from '../../../shared/utils/error-handler';
@@ -27,7 +27,7 @@ export class RemindersComponent implements OnInit{
     sortBy: "reminderAt",
     order: "desc"
   }
-  statusLabel:any = {
+  statusLabel: any = {
     pending: "Pending",
     completed: "Completed"
   };
@@ -104,7 +104,7 @@ loadReminders(): void {
         );
       }
     });
-}
+} 
 
   onStatusChange(status: string) {
     this.options.status = status;
@@ -126,9 +126,22 @@ loadReminders(): void {
 
   onEditReminder(reminder:ReminderData) {}
   onMarkCompleteReminder(reminder:ReminderData) {
-    //this.options.status = "completed";
+    const status = "completed";
+    this.updateReminder(reminder._id, {status} )
   }
-  onDeleteReminder(reminder:ReminderData) {}
+  onDeleteReminder(reminder:ReminderData) {
+    this.loading.set(true);
+    this.reminderService.deleteReminder(reminder._id).subscribe({
+      next: () => {
+        this.loadReminders();
+        this.notificationService.success('Deleted Successfully!');
+      },
+      error: (error)=> {
+        this.notificationService.error(getErrorMessage(error));
+        this.loading.set(false);
+      }
+    })
+  }
 
   onClickPreviousPage() {
     this.options.page = this.options.page - 1;
@@ -138,5 +151,19 @@ loadReminders(): void {
   onClickNextPage() {
     this.options.page = this.options.page + 1;
     this.loadReminders();
+  }
+
+  updateReminder(id: string, body:UpdateReminderRequest) {
+    this.loading.set(true);
+    this.reminderService.updateReminder(id, body).subscribe({
+      next: () => {        
+        this.loadReminders();
+        this.notificationService.success('Updated Successfully!');
+      },
+      error: (error)=> {
+        this.notificationService.error(getErrorMessage(error));
+        this.loading.set(false);
+      }
+    })
   }
 }

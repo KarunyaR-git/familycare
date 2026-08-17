@@ -28,7 +28,7 @@
                     <div class="reminder-card">
                         <div class="reminder-card-header">
                             <p class="reminder-card-title">{{reminder.title}}</p>
-                            <p class="reminder-card-status" [ngClass]="{'warning-status': reminder.status === 'pending', 'success-status': reminder.status === 'completed'}">{{statusLabel[reminder.status]}}</p>
+                            <p class="reminder-card-status" [ngClass]="{'warning-status': reminder.status === 'pending', 'success-status': reminder.status === 'completed'}">{{reminder.status ? statusLabel[reminder.status] : ''}}</p>
                         </div>
                         <div class="reminder-card-body">
                             @if (reminder.description) {
