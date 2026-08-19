@@ -1,1 +1,14 @@
-<p>reminder-form-component works!</p>
+<div>
+   <form [formGroup]="reminderForm" class="reminder-form">
+        <app-input-component [label]="'Title'" [required]="true" formControlName="title"  [errorMessage]="getErrorMessage('title')"></app-input-component>
+        <app-textarea-component  label="Description"  placeholder="Enter reminder description"  rows="4"  formControlName="description"></app-textarea-component>
+        <app-date-time-component  label="Reminder At"  formControlName="reminderAt"></app-date-time-component>
+        <app-input-component [label]="'Reminder Before'" type="number" [required]="false" formControlName="reminderBefore"  [errorMessage]="getErrorMessage('title')"></app-input-component>
+        <app-dropdown-component [placeholder]="'Select status'" [label]="'Status'" [options]="statusLists" formControlName="status"></app-dropdown-component>
+
+        <div class="form-actions">
+            <app-button-component [type]="'button'" [text]="'Cancel'" (click)="onCancel()"></app-button-component>
+            <app-button-component [type]="'submit'" text="{{ mode === 'create' ? 'Add Reminder' : 'Update Reminder' }}" (click)="onCancel()"></app-button-component>
+        </div>
+    </form>       
+</div>

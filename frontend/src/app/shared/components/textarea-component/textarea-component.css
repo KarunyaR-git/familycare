@@ -1,0 +1,48 @@
+.textarea-container {
+  width: 100%;
+}
+
+.textarea-label {
+  display: block;
+  margin-bottom: var(--spacing-sm);
+
+  color: var(--text-primary-color);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.textarea-input {
+  width: 100%;
+
+  padding: var(--spacing-md);
+
+  background-color: var(--card-color);
+  color: var(--text-primary-color);
+
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+
+  font-family: inherit;
+  font-size: var(--font-size-md);
+
+  outline: none;
+  resize: vertical;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.textarea-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(76, 166, 168, 0.12);
+}
+
+.textarea-input::placeholder {
+  color: var(--text-secondary-color);
+}
+
+.textarea-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

@@ -9,10 +9,13 @@ import { DatePipe, NgClass } from '@angular/common';
 import { SkeletonComponent } from '../../../shared/components/skeleton-component/skeleton-component';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { ModalComponent } from '../../../shared/components/modal-component/modal-component';
+import { MatDialog } from '@angular/material/dialog';
+import { ReminderFormComponent } from '../../reminders/reminder-form-component/reminder-form-component';
 
 @Component({
   selector: 'app-reminders-component',
-  imports: [DropdownComponent, FormsModule, NgClass, SkeletonComponent, MatIconModule, DatePipe],
+  imports: [DropdownComponent, FormsModule, NgClass, SkeletonComponent, MatIconModule, DatePipe, ModalComponent],
   templateUrl: './reminders-component.html',
   styleUrl: './reminders-component.css',
 })
@@ -70,7 +73,7 @@ export class RemindersComponent implements OnInit{
     }
   ];
 
-  constructor(private reminderService: ReminderService, private notificationService: NotificationService, private router: Router) {}
+  constructor(private reminderService: ReminderService, private notificationService: NotificationService, private router: Router, private dialog: MatDialog) {}
 
  ngOnInit(): void {
   this.loadReminders();
@@ -124,7 +127,20 @@ loadReminders(): void {
     this.router.navigate(["/home"]);
   }
 
-  onEditReminder(reminder:ReminderData) {}
+  onEditReminder(reminder:ReminderData) {
+    const dialogRef = this.dialog.open(ReminderFormComponent, {
+    data: {
+      mode: 'edit',
+      reminder
+    }
+  });
+
+  dialogRef.afterClosed().subscribe((result) => {
+    if (result === 'updated') {
+      this.loadReminders();
+    }
+  });
+  }
   onMarkCompleteReminder(reminder:ReminderData) {
     const status = "completed";
     this.updateReminder(reminder._id, {status} )

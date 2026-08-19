@@ -1,0 +1,44 @@
+.date-time-container {
+  width: 100%;
+}
+
+.date-time-label {
+  display: block;
+  margin-bottom: var(--spacing-sm);
+
+  color: var(--text-primary-color);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.date-time-input {
+  width: 100%;
+  min-height: 44px;
+
+  padding: 0 var(--spacing-md);
+
+  background-color: var(--card-color);
+  color: var(--text-primary-color);
+
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.date-time-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(76, 166, 168, 0.12);
+}
+
+.date-time-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

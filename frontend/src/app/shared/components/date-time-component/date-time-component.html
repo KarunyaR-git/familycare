@@ -1,0 +1,20 @@
+<div class="date-time-container">
+
+  @if (label) {
+    <label class="date-time-label">
+      {{ label }}
+    </label>
+  }
+
+  <input
+    type="datetime-local"
+    class="date-time-input"
+    [value]="value"
+    [min]="min"
+    [max]="max"
+    [disabled]="disabled"
+    (input)="onValueChange($event)"
+    (blur)="onBlur()"
+  />
+
+</div>
