@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -11,9 +11,9 @@ import { MatIconModule } from '@angular/material/icon';
 export class ModalComponent {
   @Input() title = '';
 
-  constructor(private dialogRef: MatDialogRef<ModalComponent>) {}
+  @Output() closeModal = new EventEmitter<void>();
 
   close(): void {
-    this.dialogRef.close();
+    this.closeModal.emit();
   }
 }

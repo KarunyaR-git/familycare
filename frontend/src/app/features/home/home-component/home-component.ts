@@ -75,4 +75,10 @@ export class HomeComponent implements OnInit {
   logoutUser() {
     this.authService.logout();
   }
+
+  onReminderCreated(status: 'pending' | 'completed'): void {
+    if (status === 'pending') {
+      this.remindersCount++;
+    }
+  }
 }

@@ -42,3 +42,7 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+.required {
+    color: var(--error-color);
+}

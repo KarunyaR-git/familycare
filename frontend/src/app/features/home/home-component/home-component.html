@@ -2,6 +2,6 @@
 @if (!loading()) {
     <app-baby-dashboard-component [details] = "babyDetails" [babies] = "babies" (babyChanged)="onBabyChange($event)"></app-baby-dashboard-component>
     <div class="reminder-dashboard">
-        <app-family-reminder-component [count]="remindersCount"></app-family-reminder-component>
+        <app-family-reminder-component [count]="remindersCount" (reminderCreated)="onReminderCreated($event)"></app-family-reminder-component>
     </div>
 }

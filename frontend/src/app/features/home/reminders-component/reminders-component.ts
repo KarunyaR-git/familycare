@@ -15,7 +15,7 @@ import { ReminderFormComponent } from '../../reminders/reminder-form-component/r
 
 @Component({
   selector: 'app-reminders-component',
-  imports: [DropdownComponent, FormsModule, NgClass, SkeletonComponent, MatIconModule, DatePipe, ModalComponent],
+  imports: [DropdownComponent, FormsModule, NgClass, SkeletonComponent, MatIconModule, DatePipe],
   templateUrl: './reminders-component.html',
   styleUrl: './reminders-component.css',
 })
@@ -133,13 +133,14 @@ loadReminders(): void {
       mode: 'edit',
       reminder
     }
-  });
+    });
 
-  dialogRef.afterClosed().subscribe((result) => {
-    if (result === 'updated') {
-      this.loadReminders();
-    }
-  });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'updated') {
+        this.loadReminders();
+        this.notificationService.success('Updated successfully!');
+      }
+    });
   }
   onMarkCompleteReminder(reminder:ReminderData) {
     const status = "completed";

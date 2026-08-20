@@ -28,6 +28,7 @@ export class DateTimeComponent implements ControlValueAccessor {
   @Input() min: string | null = null;
   @Input() max: string | null = null;
   @Input() disabled = false;
+  @Input() required = false;
 
   value = '';
 

@@ -16,8 +16,8 @@ export class ReminderService {
     return this.http.get<ReminderResponse>(`${this.apiUrl}/reminders?status=${status}&page=${page}&limit=2&sortBy=${sortBy}&order=${order}`);
   }
 
-  createReminder(id: string, body:ReminderRequest): Observable<CreateOrUpdateReminderResponse> {
-    return this.http.put<CreateOrUpdateReminderResponse>(`${this.apiUrl}/reminders/${id}`, body);
+  createReminder(body:ReminderRequest): Observable<CreateOrUpdateReminderResponse> {
+    return this.http.post<CreateOrUpdateReminderResponse>(`${this.apiUrl}/reminders`, body);
   }
 
   updateReminder(id: string, body:UpdateReminderRequest): Observable<CreateOrUpdateReminderResponse> {

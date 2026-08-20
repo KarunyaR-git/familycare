@@ -3,6 +3,10 @@
   @if (label) {
     <label class="date-time-label">
       {{ label }}
+      
+      @if(required){
+            <span class="required">*</span>
+      }
     </label>
   }
 
