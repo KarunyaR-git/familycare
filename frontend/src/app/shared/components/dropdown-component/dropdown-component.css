@@ -66,3 +66,7 @@
 
   pointer-events: none;
 }
+
+.required {
+    color: var(--error-color);
+}

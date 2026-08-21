@@ -24,6 +24,7 @@ export class DropdownComponent {
   @Input() label = '';
   @Input() placeholder = 'Select';
   @Input() disabled = false;
+  @Input() required = false;
   
 
   value = '';

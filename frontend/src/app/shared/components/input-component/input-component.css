@@ -68,3 +68,15 @@ input {
 .input-wrapper.error:focus-within {
     border-color: var(--error-color);
 }
+
+.input-suffix {
+  position: absolute;
+  right: var(--spacing-md);
+  top: 50%;
+  transform: translateY(-50%);
+
+  color: var(--text-secondary-color);
+  font-size: var(--font-size-sm);
+
+  pointer-events: none;
+}

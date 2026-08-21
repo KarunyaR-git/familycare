@@ -1,0 +1,14 @@
+.confirmation-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--spacing-xl)
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  width: 100%;
+}

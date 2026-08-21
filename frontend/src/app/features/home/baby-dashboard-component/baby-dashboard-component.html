@@ -4,7 +4,7 @@
         <app-dropdown-component [placeholder]="'Select baby'" [options]="babiesLists" [ngModel]="selectedBabyId" (ngModelChange)="onBabyChange($event)"></app-dropdown-component>
     </div>
     <div class="dashboard-card">
-        <app-quick-actions-component></app-quick-actions-component>
+        <app-quick-actions-component (dashboardRefresh)="onDashboardRefresh()"></app-quick-actions-component>
     </div>
     <div class="dashboard-card">
         <app-baby-summary-component [details]="details"></app-baby-summary-component>

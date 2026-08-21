@@ -1,0 +1,57 @@
+<app-modal-component
+  [title]="data.mode === 'create' ? 'Add Baby' : 'Edit Baby'"
+  (closeModal)="onCancel()">
+
+  <form
+    modal-body
+    [formGroup]="babyForm"
+    class="baby-form">
+
+    <app-input-component
+      label="Name"
+      [required]="true"
+      formControlName="name"
+      [errorMessage]="getErrorMessage('name')">
+    </app-input-component>
+
+    <app-dropdown-component
+      label="Gender"
+      placeholder="Select gender"
+      [required]="true"
+      [options]="genderLists"
+      formControlName="gender">
+    </app-dropdown-component>
+
+    <app-date-time-component
+      label="DOB"
+      type="date"
+      [required] = "true"
+      formControlName="dob">
+    </app-date-time-component>
+
+    <app-dropdown-component
+      label="Blood Group"
+      placeholder="Select bloodgroup"
+      [options]="bloodGroupLists"
+      formControlName="bloodGroup">
+    </app-dropdown-component>
+
+  </form>
+
+  <div modal-footer class="form-actions">
+    <app-button-component
+      type="button"
+      text="Cancel"
+      (clicked)="onCancel()">
+    </app-button-component>
+
+    <app-button-component
+      type="submit"
+      [text]="data.mode === 'create' ? 'Add' : 'Update'"
+      [disabled]="isDisabled" 
+      [loading]="isLoading()"
+      (clicked)="onSubmit()">
+    </app-button-component>
+  </div>
+
+</app-modal-component>

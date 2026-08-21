@@ -3,6 +3,10 @@
   @if (label) {
     <label class="dropdown-label">
       {{ label }}
+      
+      @if(required){
+            <span class="required">*</span>
+      }
     </label>
   }
 
@@ -20,7 +24,9 @@
       </option>
 
       @for (option of options; track option.value) {
-        <option [value]="option.value">
+        <option
+          [value]="option.value"
+          [selected]="option.value === value">
           {{ option.label }}
         </option>
       }

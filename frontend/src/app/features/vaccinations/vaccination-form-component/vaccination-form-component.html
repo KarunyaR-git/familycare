@@ -1,0 +1,56 @@
+<app-modal-component
+  [title]="data.mode === 'create' ? 'Add Vaccination' : 'Edit Vaccination'"
+  (closeModal)="onCancel()">
+
+  <form
+    modal-body
+    [formGroup]="vaccinationForm"
+    class="vaccination-form">
+
+    <app-input-component
+      label="Name"
+      [required]="true"
+      formControlName="name"
+      [errorMessage]="getErrorMessage('name')">
+    </app-input-component>
+
+    <app-input-component
+      label="Dose Number"
+      [required]="true"
+      [type]="'number'"
+      formControlName="doseNumber"
+      [errorMessage]="getErrorMessage('doseNumber')">
+    </app-input-component>
+
+    <app-date-time-component
+      label="Vaccine At"
+      [required] = "true"
+      formControlName="vaccineAt">
+    </app-date-time-component>
+
+    <app-textarea-component
+      label="Notes"
+      placeholder="Enter notes"
+      [rows]="4"
+      formControlName="notes">
+    </app-textarea-component>
+
+  </form>
+
+  <div modal-footer class="form-actions">
+    <app-button-component
+      type="button"
+      text="Cancel"
+      (clicked)="onCancel()">
+    </app-button-component>
+
+    <app-button-component
+      type="submit"
+      [text]="data.mode === 'create' ? 'Add' : 'Update'"
+      [disabled]="isDisabled" 
+      [loading]="isLoading()"
+      (clicked)="onSubmit()">
+    </app-button-component>
+  </div>
+
+</app-modal-component>

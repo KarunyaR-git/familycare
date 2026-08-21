@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, signal, SimpleChanges } from '@angular/core';
 import { HomeDashboardBabyDetails } from '../../../core/models/home-dasboard-response.model';
 import { BabySummary } from '../../../core/models/baby-summary.model';
 import { DropdownComponent, DropdownOption } from '../../../shared/components/dropdown-component/dropdown-component';
@@ -17,10 +17,11 @@ import { Router } from '@angular/router';
   styleUrl: './baby-dashboard-component.css',
 })
 
-export class BabyDashboardComponent implements OnInit{
+export class BabyDashboardComponent implements OnInit, OnChanges{
   @Input() details: HomeDashboardBabyDetails | null = null;
   @Input() babies: BabySummary[] = [];
   @Output() babyChanged = new EventEmitter<string>();
+  @Output() refreshdashboard = new EventEmitter<void>();
   
   babiesLists:DropdownOption[] = [];
   selectedBabyId = '';
@@ -28,8 +29,13 @@ export class BabyDashboardComponent implements OnInit{
   constructor(private selectedBabyService: SelectedBabyService, private router: Router) {}
 
   ngOnInit() {
-    this.babiesLists = mapDropdownOptions(this.babies);
     this.selectedBabyId = this.selectedBabyService.selectedBabyValue()?.id || '';
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['babies']) {
+      this.babiesLists = mapDropdownOptions(this.babies);
+    }
   }
 
   onBabyChange(babyId: string): void {
@@ -48,5 +54,9 @@ export class BabyDashboardComponent implements OnInit{
 
   onViewTodayActivities(): void {
     this.router.navigate(['/home/activities']);
+  }
+
+  onDashboardRefresh() {
+    this.refreshdashboard.emit();
   }
 }

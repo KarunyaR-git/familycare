@@ -1,0 +1,18 @@
+<app-modal-component
+  [title]="data.title"
+  (closeModal)="onCancel()">
+  <div modal-body class="confirmation-body">{{data.message}}</div>
+  <div modal-footer class="form-actions">
+    <app-button-component
+      type="button"
+      text="{{data.cancelText}}"
+      (clicked)="onCancel()">
+    </app-button-component>
+
+    <app-button-component
+      type="submit"
+      [text]="data.confirmText"
+      (clicked)="onSubmit()">
+    </app-button-component>
+  </div>
+</app-modal-component>

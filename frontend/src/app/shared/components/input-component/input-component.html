@@ -26,6 +26,11 @@
         @if(type === "password") {
             <button type="button" (click)="togglePassword()">{{ hidePassword() ? '👁️' : '👁️‍🗨️' }}</button>
         }
+        @if (suffix) {
+            <span class="input-suffix">
+            {{ suffix }}
+            </span>
+        }
     </div>
 
     @if(errorMessage){

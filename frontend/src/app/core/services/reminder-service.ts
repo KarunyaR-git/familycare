@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { CreateOrUpdateReminderResponse, ReminderRequest, ReminderResponse, UpdateReminderRequest } from '../models/reminder-response.model';
@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
 })
 export class ReminderService {
   private apiUrl = environment.apiUrl;
+
+  pendingCount = signal(0);
 
   constructor(private http: HttpClient){}
 

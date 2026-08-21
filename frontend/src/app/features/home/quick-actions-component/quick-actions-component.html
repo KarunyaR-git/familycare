@@ -3,7 +3,7 @@
 
   <mat-chip-set>
     @for (action of quickActions; track action.key) {
-      <mat-chip>
+      <mat-chip (click)="onQuickActionClick(action.key)">
         <span class="quick-action-content">
             <mat-icon>{{ action.icon }}</mat-icon>
             <span class="quick-action-label">{{ action.label }}</span>

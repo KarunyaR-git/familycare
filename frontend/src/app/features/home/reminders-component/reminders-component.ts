@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { ModalComponent } from '../../../shared/components/modal-component/modal-component';
 import { MatDialog } from '@angular/material/dialog';
 import { ReminderFormComponent } from '../../reminders/reminder-form-component/reminder-form-component';
+import { ConfirmationModalComponent } from '../../../shared/components/confirmation-modal-component/confirmation-modal-component';
 
 @Component({
   selector: 'app-reminders-component',
@@ -147,17 +148,30 @@ loadReminders(): void {
     this.updateReminder(reminder._id, {status} )
   }
   onDeleteReminder(reminder:ReminderData) {
-    this.loading.set(true);
-    this.reminderService.deleteReminder(reminder._id).subscribe({
-      next: () => {
-        this.loadReminders();
-        this.notificationService.success('Deleted Successfully!');
-      },
-      error: (error)=> {
-        this.notificationService.error(getErrorMessage(error));
-        this.loading.set(false);
+    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
+      data: {
+        title: 'Delete Reminder',
+        message: 'Are you sure you want to delete this reminder?',
+        confirmText: 'Delete',
+        cancelText: 'Cancel'
       }
-    })
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.loading.set(true);
+        this.reminderService.deleteReminder(reminder._id).subscribe({
+          next: () => {
+            this.loadReminders();
+            this.notificationService.success('Deleted Successfully!');
+          },
+          error: (error)=> {
+            this.notificationService.error(getErrorMessage(error));
+            this.loading.set(false);
+          }
+        });
+      }
+    });    
   }
 
   onClickPreviousPage() {
@@ -173,7 +187,8 @@ loadReminders(): void {
   updateReminder(id: string, body:UpdateReminderRequest) {
     this.loading.set(true);
     this.reminderService.updateReminder(id, body).subscribe({
-      next: () => {        
+      next: () => { 
+        this.reminderService.pendingCount.update(count => count - 1);       
         this.loadReminders();
         this.notificationService.success('Updated Successfully!');
       },

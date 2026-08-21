@@ -1,0 +1,59 @@
+<app-modal-component
+  [title]="data.mode === 'create' ? 'Add Growth' : 'Edit Growth'"
+  (closeModal)="onCancel()">
+
+  <form
+    modal-body
+    [formGroup]="growthForm"
+    class="growth-form">
+
+    <app-input-component
+      label="Weight"
+      [required]="true"
+      [type]="'number'"
+      [suffix]="'kg'"
+      formControlName="weight"
+      [errorMessage]="getErrorMessage('weight')">
+    </app-input-component>
+
+    <app-input-component
+      label="Height"
+      [required]="true"
+      [type]="'number'"
+      [suffix]="'cm'"
+      formControlName="height"
+      [errorMessage]="getErrorMessage('height')">
+    </app-input-component>
+
+    <app-date-time-component
+      label="Measured At"
+      [required] = "true"
+      formControlName="measuredAt">
+    </app-date-time-component>
+
+    <app-textarea-component
+      label="Notes"
+      placeholder="Enter notes"
+      [rows]="4"
+      formControlName="notes">
+    </app-textarea-component>
+
+  </form>
+
+  <div modal-footer class="form-actions">
+    <app-button-component
+      type="button"
+      text="Cancel"
+      (clicked)="onCancel()">
+    </app-button-component>
+
+    <app-button-component
+      type="submit"
+      [text]="data.mode === 'create' ? 'Add' : 'Update'"
+      [disabled]="isDisabled" 
+      [loading]="isLoading()"
+      (clicked)="onSubmit()">
+    </app-button-component>
+  </div>
+
+</app-modal-component>

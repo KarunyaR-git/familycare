@@ -52,7 +52,7 @@ export class ReminderFormComponent {
       description: [''],
       reminderAt: ['', Validators.required],
       reminderBefore: [60],
-      status: ['pending']
+      status: ['']
     });
     if(this.data.mode === 'edit') {
       this.loadData();
@@ -64,17 +64,17 @@ export class ReminderFormComponent {
   loadData() {
     const reminder = this.data.reminder;
 
-  if (!reminder) {
-    return;
-  }
+    if (!reminder) {
+      return;
+    }
 
-  this.reminderForm.patchValue({
-    title: reminder.title,
-    description: reminder.description ?? '',
-    reminderAt: toDateTimeLocal(reminder.reminderAt),
-    reminderBefore: reminder.reminderBefore,
-    status: reminder.status
-  });
+    this.reminderForm.patchValue({
+      title: reminder.title,
+      description: reminder.description ?? '',
+      reminderAt: toDateTimeLocal(reminder.reminderAt),
+      reminderBefore: reminder.reminderBefore,
+      status: reminder.status
+    });
   }
 
   getErrorMessage(controlName: string): string {
@@ -84,19 +84,6 @@ export class ReminderFormComponent {
     }
     if (control.errors['required']) {
       return `${this.getFieldLabel(controlName)} is required`;
-    }
-    if (control.errors['emailInvalid']) {
-      return 'Enter a valid email address';
-    }
-    if (control.errors['minlength']) {
-      const requiredLength = control.errors['minlength'].requiredLength;
-      return `Minimum ${requiredLength} characters required`;
-    }
-    if (control.errors['min']) {
-      return 'Age cannot be less than 0';
-    }
-    if (control.errors['max']) {
-      return 'Age cannot be greater than 120';
     }
 
     return '';
@@ -132,20 +119,30 @@ export class ReminderFormComponent {
     };
     if(this.data.mode === "create") {
       this.reminderService.createReminder(body).subscribe({
-      next: (response) => {
-        const message = response.status === "completed" ? "created-completed" : "created-pending";
-        this.dialogRef.close(message);
+      next: () => {
+        this.isLoading.set(false);
+        this.dialogRef.close("created");
       },
       error: (error) => {
+        this.isLoading.set(false);
         this.notificationService.error(getErrorMessage(error));
       }
     });
     } else {
       this.reminderService.updateReminder((this.data.reminder?._id || ''), body).subscribe({
-      next: () => {
+      next: (response) => {
+        if(this.data.reminder?.status !== response.status) {
+          if(response.status === 'pending') {
+            this.reminderService.pendingCount.update(count => count + 1);
+          } else {
+            this.reminderService.pendingCount.update(count => count - 1);
+          }
+        }
+        this.isLoading.set(false);
         this.dialogRef.close("updated");
       },
       error: (error) => {
+        this.isLoading.set(false);
         this.notificationService.error(getErrorMessage(error));
       }
     });

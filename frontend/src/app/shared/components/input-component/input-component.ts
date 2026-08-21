@@ -26,6 +26,8 @@ export class InputComponent implements ControlValueAccessor{
 
   @Input() errorMessage = '';
 
+  @Input() suffix = '';
+
   value:any = '';
   registerChange: (value: any) => void = () => {};
   registerTouched: () => void = () => {};
