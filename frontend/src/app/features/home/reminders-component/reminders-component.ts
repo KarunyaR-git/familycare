@@ -130,10 +130,11 @@ loadReminders(): void {
 
   onEditReminder(reminder:ReminderData) {
     const dialogRef = this.dialog.open(ReminderFormComponent, {
-    data: {
-      mode: 'edit',
-      reminder
-    }
+      disableClose: true,
+      data: {
+        mode: 'edit',
+        reminder
+      }
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -149,6 +150,7 @@ loadReminders(): void {
   }
   onDeleteReminder(reminder:ReminderData) {
     const dialogRef = this.dialog.open(ConfirmationModalComponent, {
+      disableClose: true,
       data: {
         title: 'Delete Reminder',
         message: 'Are you sure you want to delete this reminder?',

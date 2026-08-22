@@ -92,6 +92,7 @@ export class HomeComponent implements OnInit {
 
   onAddBaby() {
     const dialogRef = this.dialog.open(BabyFormComponent, {
+      disableClose: true,
       data: {
         mode: "create"
       }

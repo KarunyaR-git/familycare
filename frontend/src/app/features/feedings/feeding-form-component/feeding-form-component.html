@@ -1,0 +1,95 @@
+<app-modal-component
+  [title]="data.mode === 'create' ? 'Add Feeding' : 'Edit Feeding'"
+  (closeModal)="onCancel()">
+
+  <form
+    modal-body
+    [formGroup]="feedingForm"
+    class="feeding-form">
+
+    <app-date-time-component
+      label="Feeding At"
+      [required] = "true"
+      formControlName="feedingAt"
+      [errorMessage]="getErrorMessage('feedingAt')">
+    </app-date-time-component>
+
+    <app-dropdown-component
+      label="Type"
+      placeholder="Select type"
+      [required]="true"
+      [options]="typeLists"
+      formControlName="type">
+    </app-dropdown-component>
+    
+    @if(feedingType === "breastfeeding") {
+        <app-input-component
+        label="Duration"
+        [required]="true"
+        [type]="'number'"
+        formControlName="duration"
+        [errorMessage]="getErrorMessage('duration')">
+        </app-input-component>
+
+         <app-dropdown-component
+        label="Breastfeeding Side"
+        placeholder="Select side"
+        [required]="true"
+        [options]="breastfeedingSideLists"
+        formControlName="breastfeedingSide">
+        </app-dropdown-component>
+    }
+
+    @if(feedingType === "solid") {
+        <app-input-component
+        label="Food Name"
+        [required]="true"
+        formControlName="foodName"
+        [errorMessage]="getErrorMessage('foodName')">
+        </app-input-component>
+    }
+
+    @if(feedingType === "formula" || feedingType === "water" || feedingType === "solid" || feedingType === "other") {
+        <app-input-component
+        label="Quantity"
+        [required]="feedingType !== 'other'"
+        [type]="'number'"
+        formControlName="quantity"
+        [errorMessage]="getErrorMessage('quantity')">
+        </app-input-component>
+
+        <app-dropdown-component
+        label="Unit"
+        placeholder="Select unit"
+        [required]="feedingType !== 'other'"
+        [options]="unitLists"
+        formControlName="unit">
+        </app-dropdown-component>
+    }
+
+    <app-textarea-component
+      label="Notes"
+      placeholder="Enter notes"
+      [rows]="4"
+      formControlName="notes">
+    </app-textarea-component>
+
+  </form>
+
+  <div modal-footer class="form-actions">
+    <app-button-component
+      type="button"
+      text="Cancel"
+      (clicked)="onCancel()">
+    </app-button-component>
+
+    <app-button-component
+      type="submit"
+      [text]="data.mode === 'create' ? 'Add' : 'Update'"
+      [disabled]="isDisabled" 
+      [loading]="isLoading()"
+      (clicked)="onSubmit()">
+    </app-button-component>
+  </div>
+
+</app-modal-component>

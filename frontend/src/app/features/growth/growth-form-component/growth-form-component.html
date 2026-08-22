@@ -28,7 +28,8 @@
     <app-date-time-component
       label="Measured At"
       [required] = "true"
-      formControlName="measuredAt">
+      formControlName="measuredAt"
+      [errorMessage]="getErrorMessage('measuredAt')">
     </app-date-time-component>
 
     <app-textarea-component

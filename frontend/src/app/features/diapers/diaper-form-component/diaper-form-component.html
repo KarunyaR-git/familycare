@@ -18,7 +18,8 @@
     <app-date-time-component
       label="Changed At"
       [required] = "true"
-      formControlName="changedAt">
+      formControlName="changedAt"
+      [errorMessage]="getErrorMessage('changedAt')">
     </app-date-time-component>
 
     <app-textarea-component

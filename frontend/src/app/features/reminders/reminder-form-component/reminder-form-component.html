@@ -24,7 +24,8 @@
     <app-date-time-component
       label="Reminder At"
       [required] = "true"
-      formControlName="reminderAt">
+      formControlName="reminderAt"
+      [errorMessage]="getErrorMessage('reminderAt')">
     </app-date-time-component>
 
     <app-input-component

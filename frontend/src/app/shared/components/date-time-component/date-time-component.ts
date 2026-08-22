@@ -30,6 +30,7 @@ export class DateTimeComponent implements ControlValueAccessor {
   @Input() disabled = false;
   @Input() required = false;
   @Input() type: 'date' | 'datetime-local' = 'datetime-local';
+  @Input() errorMessage = '';
 
   value = '';
 

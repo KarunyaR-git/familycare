@@ -7,7 +7,7 @@
 }
 
 label {
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-sm);
     color: var(--text-primary-color);
     font-weight: 500;
 }

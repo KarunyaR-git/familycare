@@ -1,0 +1,59 @@
+<app-modal-component
+  [title]="title"
+  (closeModal)="onCancel()">
+
+  <form
+    modal-body
+    [formGroup]="sleepForm"
+    class="sleep-form">
+
+    @if(data.action !== "wakeup") {
+        <app-date-time-component
+        label="Slept At"
+        [required] = "true"
+        formControlName="sleptAt"
+        [errorMessage]="getErrorMessage('sleptAt')">
+        </app-date-time-component>
+
+        <app-textarea-component
+        label="Sleep Notes"
+        placeholder="Enter notes"
+        [rows]="4"
+        formControlName="sleepNotes">
+        </app-textarea-component>
+    }
+    @if(data.action !== "sleep") {
+        <app-date-time-component
+        label="WokeUp At"
+        [required] = "true"
+        formControlName="wokeUpAt"
+        [errorMessage]="getErrorMessage('wokeUpAt')">
+        </app-date-time-component>
+
+        <app-textarea-component
+        label="WokeUp Notes"
+        placeholder="Enter notes"
+        [rows]="4"
+        formControlName="wokeUpNotes">
+        </app-textarea-component>
+    }
+
+  </form>
+
+  <div modal-footer class="form-actions">
+    <app-button-component
+      type="button"
+      text="Cancel"
+      (clicked)="onCancel()">
+    </app-button-component>
+
+    <app-button-component
+      type="submit"
+      [text]="data.mode === 'create' ? 'Add' : 'Update'"
+      [disabled]="isDisabled" 
+      [loading]="isLoading()"
+      (clicked)="onSubmit()">
+    </app-button-component>
+  </div>
+
+</app-modal-component>

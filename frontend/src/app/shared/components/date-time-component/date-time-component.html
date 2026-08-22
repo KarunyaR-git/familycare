@@ -13,6 +13,7 @@
   <input
     [type]="type"
     class="date-time-input"
+    [class.error-input]="errorMessage"
     [value]="value"
     [min]="min"
     [max]="max"
@@ -20,5 +21,11 @@
     (input)="onValueChange($event)"
     (blur)="onBlur()"
   />
+
+  @if (errorMessage) {
+    <span class="error-message">
+      {{ errorMessage }}
+    </span>
+  }
 
 </div>
