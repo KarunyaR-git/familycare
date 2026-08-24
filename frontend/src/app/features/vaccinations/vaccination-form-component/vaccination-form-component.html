@@ -25,6 +25,7 @@
     <app-date-time-component
       label="Vaccine At"
       [required] = "true"
+      [blockFuture]="true"
       formControlName="vaccineAt"
       [errorMessage]="getErrorMessage('vaccineAt')">
     </app-date-time-component>

@@ -28,6 +28,7 @@
     <app-date-time-component
       label="Measured At"
       [required] = "true"
+      [blockFuture]="true"
       formControlName="measuredAt"
       [errorMessage]="getErrorMessage('measuredAt')">
     </app-date-time-component>

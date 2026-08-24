@@ -73,9 +73,12 @@ export class VaccinationFormComponent implements OnInit{
       return `${this.getFieldLabel(controlName)} is required`;
     }
 
-     if (control.errors['min']) {
+    if (control.errors['min']) {
       const minValue = control.errors['min'].min;
       return `${this.getFieldLabel(controlName)} cannot be less than ${minValue}`;
+    }
+    if (control.errors?.['futureDate']) {
+      return `${this.getFieldLabel(controlName)} cannot be in the future`;
     }
 
     return '';

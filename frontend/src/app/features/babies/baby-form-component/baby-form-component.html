@@ -26,6 +26,7 @@
       label="DOB"
       type="date"
       [required] = "true"
+      [blockFuture]="true"
       formControlName="dob"
       [errorMessage]="getErrorMessage('dob')">
     </app-date-time-component>

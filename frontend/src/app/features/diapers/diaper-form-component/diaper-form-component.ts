@@ -85,6 +85,9 @@ export class DiaperFormComponent implements OnInit{
     if (control.errors['required']) {
       return `${this.getFieldLabel(controlName)} is required`;
     }
+    if (control.errors?.['futureDate']) {
+      return `${this.getFieldLabel(controlName)} cannot be in the future`;
+    }
 
     return '';
   }

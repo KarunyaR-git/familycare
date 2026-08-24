@@ -93,6 +93,9 @@ export class SleepFormComponent implements OnInit{
     if (controlName === "wokeUpAt" && this.sleepForm.hasError('wakeBeforeSleep')) {
       return 'Wake up time must be after sleep time';
     }
+    if (control.errors?.['futureDate']) {
+      return `${this.getFieldLabel(controlName)} cannot be in the future`;
+    }
 
     return '';
   }

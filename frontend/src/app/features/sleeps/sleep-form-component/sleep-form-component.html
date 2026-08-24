@@ -11,6 +11,7 @@
         <app-date-time-component
         label="Slept At"
         [required] = "true"
+        [blockFuture]="true"
         formControlName="sleptAt"
         [errorMessage]="getErrorMessage('sleptAt')">
         </app-date-time-component>
@@ -26,6 +27,7 @@
         <app-date-time-component
         label="WokeUp At"
         [required] = "true"
+        [blockFuture]="true"
         formControlName="wokeUpAt"
         [errorMessage]="getErrorMessage('wokeUpAt')">
         </app-date-time-component>

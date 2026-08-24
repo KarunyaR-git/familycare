@@ -10,6 +10,7 @@
     <app-date-time-component
       label="Feeding At"
       [required] = "true"
+      [blockFuture]="true"
       formControlName="feedingAt"
       [errorMessage]="getErrorMessage('feedingAt')">
     </app-date-time-component>

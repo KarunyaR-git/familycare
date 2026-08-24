@@ -245,6 +245,9 @@ export class FeedingFormComponent implements OnInit{
       const minValue = control.errors['min'].min;
       return `${this.getFieldLabel(controlName)} cannot be less than ${minValue}`;
     }
+    if (control.errors?.['futureDate']) {
+      return `${this.getFieldLabel(controlName)} cannot be in the future`;
+    }
 
     return '';
   }
