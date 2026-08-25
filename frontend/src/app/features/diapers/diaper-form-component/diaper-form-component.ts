@@ -45,6 +45,7 @@ export class DiaperFormComponent implements OnInit{
     public data: {
       mode: 'create' | 'edit';
       diaper?: DiaperResponse;
+      babyId?: string;
     },
     private diaperService: DiaperService,
     private notificationService: NotificationService,
@@ -112,7 +113,9 @@ export class DiaperFormComponent implements OnInit{
     const formValue = this.diaperForm.value;
     const baby = this.selectedBabyService.selectedBabyValue();
 
-    if (!baby) {
+    const babyId = baby?.id ?? this.data.babyId;
+
+    if (!babyId) {
       this.notificationService.error('Please select a baby');
       this.isLoading.set(false);
       return;
@@ -120,7 +123,7 @@ export class DiaperFormComponent implements OnInit{
     const body = {
       ...formValue,
       changedAt: new Date(formValue.changedAt).toISOString(),
-      babyId: baby.id
+      babyId
     };
 
     if(this.data.mode === "create") {
@@ -139,6 +142,7 @@ export class DiaperFormComponent implements OnInit{
       this.diaperService.updateDiaper((this.data.diaper?._id || ''), body).subscribe({
         next: () => {          
           this.isLoading.set(false);
+          this.notificationService.success('Updated Successfully!');
           this.dialogRef.close("updated");
         },
         error: (error) => {

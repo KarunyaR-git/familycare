@@ -44,3 +44,37 @@ export interface LatestBabyActivitiesDetails {
     activityType: string;
     activityAt: string;
 }
+
+export interface TodayBabyActivities {
+    baby: {
+        id: string;
+        name: string
+    },
+    activities: TodayActivities[]
+}
+
+export interface TodayActivities {
+    _id: string;
+    activityType: string;
+    activityAt: string;
+    sleptAt?: string;
+    sleepNotes?: string;
+    wokeUpAt?: string;
+    wokeUpNotes?: string;
+    durationMinutes?: number;
+    feedingAt?: string;
+    foodName?: string;
+    quantity?: number;
+    unit?: string;
+    duration?: number;
+    breastfeedingSide?: string;
+    notes?: string;
+    type?: string;
+    changedAt?: string;
+    vaccineAt?: string;
+    name?: string;
+    doseNumber?: number;
+    measuredAt?: string;
+    weight?: number;
+    height?: number;
+}

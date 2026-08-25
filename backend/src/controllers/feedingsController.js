@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Feeding = require('../models/feeding');
 const Baby = require('../models/baby');
+const { isValidDate, isFutureDate } = require('../utils/dateHelper');
 const { getPagination, getSort, getPaginationMeta } = require('../utils/queryHelper');
 
 async function createFeeding(req, res, next) {
@@ -19,6 +20,7 @@ async function createFeeding(req, res, next) {
         userId: req.user.userId
     })   
     try{
+        clearUnWantedFields(feeding);
         validateFeeding(feeding);
         const existingBaby = await Baby.findOne({
             _id: feeding.babyId,
@@ -27,6 +29,21 @@ async function createFeeding(req, res, next) {
         if(!existingBaby) {
             const error = new Error("Baby not found");
             error.statusCode = 404;
+            return next(error);
+        }
+        if(!req.body.feedingAt) {
+            const error = new Error("Feeding date is required");
+            error.statusCode = 400;
+            return next(error);
+        }
+        if(!isValidDate(req.body.feedingAt)) {
+            const error = new Error("Invalid date");
+            error.statusCode = 400;
+            return next(error);
+        }
+        if(isFutureDate(req.body.feedingAt)) {
+            const error = new Error("Future date and time is not allowed.");
+            error.statusCode = 400;
             return next(error);
         }
         await feeding.save();
@@ -100,6 +117,18 @@ async function updateFeedingById(req, res, next) {
         error.statusCode = 400;
         return next(error);
       }
+      if("feedingAt" in req.body) {
+            if(!isValidDate(req.body.feedingAt)) {
+                const error = new Error("Invalid date");
+                error.statusCode = 400;
+                return next(error);
+            }
+            if(isFutureDate(req.body.feedingAt)) {
+                const error = new Error("Future date and time is not allowed.");
+                error.statusCode = 400;
+                return next(error);
+            }            
+        }
       try{
         const filter = {
             _id: feedingId,
@@ -165,7 +194,7 @@ function clearUnWantedFields(feeding) {
     if(["formula", "water", "solid", "other"].includes(feeding.type)) {
         feeding.breastfeedingSide = undefined;
         feeding.duration = undefined;
-        if(feeding.type == "formula" || feeding.type === "water") {
+        if(feeding.type === "formula" || feeding.type === "water" || feeding.type === "other") {
             feeding.foodName = undefined;
         }
     } else {
@@ -177,7 +206,7 @@ function clearUnWantedFields(feeding) {
 
 function validateFeeding(feeding) {
     if(feeding.type === "breastfeeding" && (!feeding.duration || !feeding.breastfeedingSide)) {
-        const error = new Error("duration and breastFedding Side are required for type breastFeeding");
+        const error = new Error("Duration and breastfeeding side are required for breastfeeding");
         error.statusCode = 400;
         throw error;
     }

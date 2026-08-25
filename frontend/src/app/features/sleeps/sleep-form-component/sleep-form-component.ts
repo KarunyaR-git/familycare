@@ -31,6 +31,7 @@ export class SleepFormComponent implements OnInit{
       mode: 'create' | 'edit';
       action: 'sleep' | 'wakeup' | 'both'
       sleep?: SleepResponse;
+      babyId?: string;
     },
     private sleepService: SleepService,
     private notificationService: NotificationService,
@@ -119,7 +120,9 @@ export class SleepFormComponent implements OnInit{
     const formValue = this.sleepForm.value;
     const baby = this.selectedBabyService.selectedBabyValue();
 
-    if (!baby) {
+    const babyId = baby?.id ?? this.data.babyId;
+
+    if (!babyId) {
       this.notificationService.error('Please select a baby');
       this.isLoading.set(false);
       return;
@@ -128,7 +131,7 @@ export class SleepFormComponent implements OnInit{
       ...formValue,
       sleptAt: formValue.sleptAt? new Date(formValue.sleptAt).toISOString(): null,
       wokeUpAt: formValue.wokeUpAt? new Date(formValue.wokeUpAt).toISOString(): null,
-      babyId: baby.id
+      babyId
     };
 
     if(this.data.mode === "create") {
@@ -147,6 +150,7 @@ export class SleepFormComponent implements OnInit{
       this.sleepService.updateSleep((this.data.sleep?._id || ''), body).subscribe({
         next: () => {          
           this.isLoading.set(false);
+          this.notificationService.success('Updated Successfully!');
           this.dialogRef.close("updated");
         },
         error: (error) => {

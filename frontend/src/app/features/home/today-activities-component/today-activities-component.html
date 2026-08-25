@@ -1,1 +1,146 @@
-<p>today-activities-component works!</p>
+<div class="today-activity-page">
+    <div class="page-title">
+        <button
+            type="button"
+            class="back-button"
+            (click)="onBackToHome()">
+            <mat-icon>chevron_left</mat-icon>
+            Back            
+        </button>
+        <h3>Today's Activities</h3>
+    </div>
+    <div class="page-content">
+        <div class="content-details">
+            <div class="detail-actions">
+                <h4>{{selectedBaby?.name}}</h4>
+                <app-dropdown-component class="action-dropdown" [placeholder]="'Select activity'" [options]="actionList" [ngModel]="selectedActionId()" (ngModelChange)="onActionChange($event)"></app-dropdown-component>
+            </div>
+            <div>
+                {{today | date: 'longDate' }}
+            </div>
+
+        </div>
+        <div class="content-card">
+             @if (loading()) {
+                <app-skeleton-component
+                variant="card"
+                [count]="5">
+                </app-skeleton-component>
+            } @else {
+                @if(todayActivityList.length === 0) {
+                    <div class="empty-state">
+                        <p>No activities yet today</p>
+                        <p>Start logging your baby's activities from Quick Actions.</p>
+                    </div>                    
+                } @else if(selectedActionId() !== "all" && filteredList.length === 0){
+                    <div class="empty-state">
+                        <p>No {{selectedActionId()}} activities yet today</p>
+                    </div>
+                } @else {
+                    @for (activity of filteredList; track activity._id) {
+                        <div class="activity-card">
+                            <div class="activity-card-header">
+                                <mat-icon>{{ actionIcon[activity.activityType] }}</mat-icon>
+                                <span class="activity-card-title">{{ actionTitle[activity.activityType] }}</span>
+                                <span class="activity-time">{{activity.activityAt | date: 'shortTime'}}</span>
+                            </div>
+                            <div class="activity-card-body">
+                                @if(activity.activityType === 'diaper') {
+                                    <p>{{(activity.type || '') | capitalize}}</p>
+                                    @if(activity.notes) {
+                                        <p>{{activity.notes}}</p>
+                                    }
+                                } @else if(activity.activityType === 'growth') {
+                                    <p>
+                                        <span>{{activity.weight}}&nbsp;kg</span>
+                                        <span>&nbsp;&nbsp;.&nbsp;&nbsp;</span>
+                                        <span>{{activity.height}}&nbsp;cm</span>
+                                    </p>
+                                    @if(activity.notes) {
+                                        <p>{{activity.notes}}</p>
+                                    }
+                                } @else if(activity.activityType === 'vaccination') {
+                                    <p>
+                                        <span class="activity-uppercase">{{activity.name}}</span>
+                                        <span>&nbsp;&nbsp;.&nbsp;&nbsp;Dose&nbsp;</span>
+                                        <span>{{activity.doseNumber}}</span>
+                                    </p>
+                                    @if(activity.notes) {
+                                        <p>{{activity.notes}}</p>
+                                    }
+                                } @else if(activity.activityType === 'sleep') {
+                                    <p>
+                                        {{ activity.activityAt | date:'shortTime' }}
+
+                                        @if (activity.wokeUpAt) {
+                                            →
+                                            {{ activity.wokeUpAt | date:'shortTime' }}
+                                        }
+                                    </p>
+                                    @if(activity.durationMinutes != null) {
+                                        <p>{{formatMinutes(activity.durationMinutes)}}</p>
+                                    } 
+                                    @if(activity.sleepNotes) {
+                                        <p>{{activity.sleepNotes}}</p>
+                                    }
+                                    @if(activity.wokeUpNotes) {
+                                        <p>{{activity.wokeUpNotes}}</p>
+                                    }
+                                } @else if (activity.activityType === 'wakeUp') {
+                                    <p>
+                                        Woke up at {{ activity.activityAt | date:'shortTime' }}
+                                    </p>
+                                    @if(activity.wokeUpNotes) {
+                                        <p>{{activity.wokeUpNotes}}</p>
+                                    }
+                                } @else {
+                                    <p>
+                                        <span>{{(activity.type || '')| capitalize}}</span>
+                                        @if(activity.type === 'solid') {
+                                            <span>&nbsp;&nbsp;.&nbsp;&nbsp;</span>
+                                            <span>{{(activity.foodName || '') | capitalize}}</span>
+                                        }
+                                        @if(activity.type === 'breastfeeding') {
+                                            <span>&nbsp;&nbsp;.&nbsp;&nbsp;</span>
+                                            <span>{{(activity.breastfeedingSide || '') | capitalize}}</span>
+                                        }
+                                    </p>
+                                    @if(activity.type !== 'breastfeeding') {
+                                        <p> 
+                                            @if(activity.quantity) {
+                                                <span>{{activity.quantity}}&nbsp;</span>
+                                            }
+                                            @if(activity.unit) {
+                                                <span>{{activity.unit}}</span>
+                                            }
+                                        </p>
+                                    } @else {
+                                        <p>{{formatMinutes(activity.duration || 0)}}</p>
+                                    }
+                                    @if(activity.notes) {
+                                        <p>{{activity.notes}}</p>
+                                    }                                  
+                                }
+                            </div>
+                            <div class="activity-card-footer">
+                                <button
+                                type="button"
+                                class="edit-button"
+                                (click)="onEditActivity(activity)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button
+                                type="button"
+                                class="delete-button"
+                                (click)="onDeleteActivity(activity)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+
+</div>

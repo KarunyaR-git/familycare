@@ -53,7 +53,7 @@ async function getDashboardDetails(req, res, next) {
 
 async function getBabyDetailsById(req, res, next) {
     try{
-        const babyId = req.params.id;
+        const babyId = req.params.babyId;
         if(!mongoose.Types.ObjectId.isValid(babyId)) {
             const error = new Error('Invalid id');
             error.statusCode = 400;
@@ -76,6 +76,104 @@ async function getBabyDetailsById(req, res, next) {
         
         return res.status(200).json(babyDetails);
     }catch(error) {
+        return next(error);
+    }    
+}
+
+async function getTodayActivities(req, res, next) {
+    try {
+        const babyId = req.params.babyId;
+        if(!mongoose.Types.ObjectId.isValid(babyId)) {
+            const error = new Error('Invalid id');
+            error.statusCode = 400;
+            return next(error);
+        }
+        const existingBaby = await Babies.findOne({
+            userId: req.user.userId,
+            _id: babyId
+        })
+        if(!existingBaby) {
+            const error = new Error('Baby not found');
+            error.statusCode = 404;
+            return next(error);
+        }
+        const filter = {
+                userId: req.user.userId,
+                babyId
+        }
+        const startOfDay = new Date();
+        startOfDay.setHours(0, 0, 0, 0);
+        const nextDay = new Date(startOfDay);
+        nextDay.setDate(nextDay.getDate() + 1);
+        const [sleep, feeding, diaper, vaccination, growth] = await Promise.all([
+            Sleep.find({
+                ...filter,
+                $or: [
+                    {
+                    sleptAt: {
+                        $gte: startOfDay,
+                        $lt: nextDay
+                    }
+                    },
+                    {
+                    sleptAt: null,
+                    wokeUpAt: {
+                        $gte: startOfDay,
+                        $lt: nextDay
+                    }
+                    }
+                ]
+            })
+            .select('sleptAt sleepNotes wokeUpAt wokeUpNotes durationMinutes'),
+
+            Feeding.find({
+                ...filter,
+                feedingAt: {
+                    $gte: startOfDay,
+                    $lt: nextDay
+                }
+            }).select('feedingAt foodName quantity unit duration breastfeedingSide notes type'),
+
+            Diaper.find({
+                ...filter,
+                changedAt: {
+                    $gte: startOfDay,
+                    $lt: nextDay
+                }
+            }).select('changedAt type notes'),
+
+            Vaccination.find({
+                ...filter,
+                vaccineAt: {
+                    $gte: startOfDay,
+                    $lt: nextDay
+                }
+            }).select('vaccineAt name doseNumber notes'),
+
+            Growth.find({
+                ...filter,
+                measuredAt: {
+                    $gte: startOfDay,
+                    $lt: nextDay
+                }
+            }).select('measuredAt weight height notes'),
+        ]);
+
+        const activities = [...sleep, ...feeding, ...diaper, ...vaccination, ...growth];
+        const normalizedActivities = normalizeActivities(activities, true);
+        normalizedActivities.sort(
+            (a, b) => new Date(a.activityAt) - new Date(b.activityAt)
+        );
+        const response = {
+            baby: {
+                id: babyId,
+                name: existingBaby.name
+            },
+            activities: normalizedActivities
+        }
+
+        res.status(200).json(response);
+    } catch(error) {
         return next(error);
     }    
 }
@@ -189,7 +287,7 @@ async function getBabyDetails(filter) {
     }    
 }
 
-function normalizeActivities(activities) {
+function normalizeActivities(activities, preserveActivityAt = false) {
     return activities.map((activity)=>{
         const obj = activity.toObject();
         let activityType;
@@ -197,27 +295,27 @@ function normalizeActivities(activities) {
         if(obj.feedingAt){
             activityType = 'feeding';
             activityAt = obj.feedingAt;
-            delete obj.feedingAt;
+            if(!preserveActivityAt) { delete obj.feedingAt; }            
         }else if(obj.changedAt){
             activityType = 'diaper';
             activityAt = obj.changedAt;
-            delete obj.changedAt;
+            if(!preserveActivityAt) { delete obj.changedAt; }
         }else if(obj.sleptAt){
             activityType = 'sleep';
             activityAt = obj.sleptAt;
-            delete obj.sleptAt;
+            if(!preserveActivityAt) { delete obj.sleptAt; }
         }else if(obj.wokeUpAt){
             activityType = 'wakeUp';
             activityAt = obj.wokeUpAt;
-            delete obj.wokeUpAt;
+            if(!preserveActivityAt) { delete obj.wokeUpAt; }
         }else if(obj.measuredAt){
             activityType = 'growth';
             activityAt = obj.measuredAt;
-            delete obj.measuredAt;
+            if(!preserveActivityAt) { delete obj.measuredAt; }
         }else if(obj.vaccineAt){
             activityType = 'vaccination';
             activityAt = obj.vaccineAt;
-            delete obj.vaccineAt;
+            if(!preserveActivityAt) { delete obj.vaccineAt; }
         }
         return {
             ...obj,
@@ -229,5 +327,6 @@ function normalizeActivities(activities) {
 
 module.exports = {
     getDashboardDetails,
-    getBabyDetailsById
+    getBabyDetailsById,
+    getTodayActivities
 }

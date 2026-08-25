@@ -1,5 +1,13 @@
-export function toDateTimeLocal(dateString: string): string {
+export function toDateTimeLocal(dateString?: string | null): string {
+  if (!dateString) {
+    return '';
+  }
+
   const date = new Date(dateString);
+
+  if (isNaN(date.getTime())) {
+    return '';
+  }
 
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');

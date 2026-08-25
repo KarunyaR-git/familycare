@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { SleepRequest, SleepResponse } from '../models/sleep.models';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,10 @@ export class SleepService {
 
   updateSleep(id: string, body: SleepRequest) {
     return this.http.patch<SleepResponse>(`${this.apiUrl}/sleeps/${id}`, body);
+  }
+
+  deleteSleep(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/sleeps/${id}`);
   }
 }
 

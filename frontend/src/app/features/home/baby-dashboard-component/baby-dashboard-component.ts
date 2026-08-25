@@ -53,7 +53,7 @@ export class BabyDashboardComponent implements OnInit, OnChanges{
   }
 
   onViewTodayActivities(): void {
-    this.router.navigate(['/home/activities']);
+    this.router.navigate(['/home/activities', this.selectedBabyId]);
   }
 
   onDashboardRefresh() {

@@ -97,6 +97,7 @@ export class FeedingFormComponent implements OnInit{
     public data: {
       mode: 'create' | 'edit';
       feeding?: FeedingResponse;
+      babyId?: string;
     },
     private feedingService: FeedingService,
     private notificationService: NotificationService,
@@ -277,7 +278,9 @@ export class FeedingFormComponent implements OnInit{
     const formValue = this.feedingForm.value;
     const baby = this.selectedBabyService.selectedBabyValue();
 
-    if (!baby) {
+    const babyId = baby?.id ?? this.data.babyId;
+
+    if (!babyId) {
       this.notificationService.error('Please select a baby');
       this.isLoading.set(false);
       return;
@@ -285,7 +288,7 @@ export class FeedingFormComponent implements OnInit{
     const body = {
       ...formValue,
       feedingAt: new Date(formValue.feedingAt).toISOString(),
-      babyId: baby.id
+      babyId
     };
 
     if(this.data.mode === "create") {
@@ -319,7 +322,7 @@ export class FeedingFormComponent implements OnInit{
   }
 
   get isDisabled() {
-    return !this.feedingForm.valid || this.isLoading()
+    return !this.feedingForm.valid || this.isLoading() || this.feedingForm.pristine
   }
 
   get feedingType() {

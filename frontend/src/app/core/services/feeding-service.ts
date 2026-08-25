@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { FeedingRequest, FeedingResponse } from '../models/feeding.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -17,5 +18,9 @@ export class FeedingService {
 
   updateFeeding(id: string, body: FeedingRequest) {
     return this.http.patch<FeedingResponse>(`${this.apiUrl}/feedings/${id}`, body);
+  }
+
+  deleteFeeding(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/feedings/${id}`);
   }
 }

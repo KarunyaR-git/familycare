@@ -31,6 +31,7 @@ export class GrowthFormComponent implements OnInit{
     public data: {
       mode: 'create' | 'edit';
       growth?: GrowthResponse;
+      babyId?: string;
     },
     private growthService: GrowthService,
     private notificationService: NotificationService,
@@ -106,7 +107,9 @@ export class GrowthFormComponent implements OnInit{
     const formValue = this.growthForm.value;
     const baby = this.selectedBabyService.selectedBabyValue();
 
-    if (!baby) {
+    const babyId = baby?.id ?? this.data.babyId;
+
+    if (!babyId) {
       this.notificationService.error('Please select a baby');
       this.isLoading.set(false);
       return;
@@ -114,7 +117,7 @@ export class GrowthFormComponent implements OnInit{
     const body = {
       ...formValue,
       measuredAt: new Date(formValue.measuredAt).toISOString(),
-      babyId: baby.id
+      babyId
     };
 
     if(this.data.mode === "create") {
@@ -133,6 +136,7 @@ export class GrowthFormComponent implements OnInit{
       this.growthService.updateGrowth((this.data.growth?._id || ''), body).subscribe({
         next: () => {          
           this.isLoading.set(false);
+          this.notificationService.success('Updated Successfully!');
           this.dialogRef.close("updated");
         },
         error: (error) => {

@@ -3,6 +3,7 @@ const Sleep = require('../models/sleep');
 
 const mongoose = require('mongoose');
 
+const { isValidDate, isFutureDate } = require('../utils/dateHelper');
 const { getPagination, getSort, getPaginationMeta } = require('../utils/queryHelper')
 
 async function createSleepRecord(req, res, next) {
@@ -26,7 +27,8 @@ async function createSleepRecord(req, res, next) {
             ...req.body,
             durationMinutes: null,
             userId: req.user.userId
-        });        
+        });
+        clearUnwantedSleepFields(sleepRecord);        
         const baby = await Baby.findOne({
             _id: sleepRecord.babyId,
             userId: req.user.userId
@@ -35,7 +37,35 @@ async function createSleepRecord(req, res, next) {
             const error = new Error("Baby not found");
             error.statusCode = 404;
             return next(error);
-        }        
+        } 
+        
+        if (sleepRecord.sleptAt) {
+            if (!isValidDate(sleepRecord.sleptAt)) {
+                const error = new Error("Invalid sleep date");
+                error.statusCode = 400;
+                return next(error);
+            }
+
+            if (isFutureDate(sleepRecord.sleptAt)) {
+                const error = new Error("Future date and time is not allowed.");
+                error.statusCode = 400;
+                return next(error);
+            }
+        }
+
+        if (sleepRecord.wokeUpAt) {
+            if (!isValidDate(sleepRecord.wokeUpAt)) {
+                const error = new Error("Invalid wake up date");
+                error.statusCode = 400;
+                return next(error);
+            }
+
+            if (isFutureDate(sleepRecord.wokeUpAt)) {
+                const error = new Error("Future date and time is not allowed.");
+                error.statusCode = 400;
+                return next(error);
+            }
+        }
 
         const existingSleepRecord = await Sleep.findOne({
             babyId: sleepRecord.babyId,
@@ -159,15 +189,32 @@ async function updateSleepRecordById(req, res, next) {
             error.statusCode = 400;
             return next(error);
         }
-        if("sleptAt" in req.body && !isValidDate(req.body.sleptAt)) {
-            const error = new Error("Invalid sleep date");
-            error.statusCode = 400;
-            return next(error);
+        if (req.body.sleptAt) {
+            if (!isValidDate(req.body.sleptAt)) {
+                const error = new Error("Invalid sleep date");
+                error.statusCode = 400;
+                return next(error);
+            }
+
+            if (isFutureDate(req.body.sleptAt)) {
+                const error = new Error("Future date and time is not allowed.");
+                error.statusCode = 400;
+                return next(error);
+            }
         }
-        if("wokeUpAt" in req.body && !isValidDate(req.body.wokeUpAt)) {
-            const error = new Error("Invalid wokeUp date");
-            error.statusCode = 400;
-            return next(error);
+
+        if (req.body.wokeUpAt) {
+            if (!isValidDate(req.body.wokeUpAt)) {
+                const error = new Error("Invalid wake up date");
+                error.statusCode = 400;
+                return next(error);
+            }
+
+            if (isFutureDate(req.body.wokeUpAt)) {
+                const error = new Error("Future date and time is not allowed.");
+                error.statusCode = 400;
+                return next(error);
+            }
         }
         const sleepRecord = await Sleep.findOne({
             _id: sleepId,
@@ -196,7 +243,7 @@ async function updateSleepRecordById(req, res, next) {
             return next(error);
         }
         if(sleepRecord.wokeUpAt && sleepRecord.sleptAt) {
-            if(sleepRecord.wokeUpAt < sleepRecord.sleptAt) {
+            if(sleepRecord.wokeUpAt <= sleepRecord.sleptAt) {
                 const error = new Error("WokeUpAt date should be later than sleptAt date");
                 error.statusCode = 400;
                 return next(error);
@@ -240,13 +287,26 @@ async function deleteSleepRecordById(req, res, next) {
     }
 }
 
-const isValidDate = (value) => {
-    if (value === null || value === undefined) return true;
-    return !isNaN(new Date(value).getTime());
-};
-
 function calculateDurationMinutes(sleepRecord) {
     sleepRecord.durationMinutes = (sleepRecord.wokeUpAt - sleepRecord.sleptAt) / 60000;
+}
+
+function clearUnwantedSleepFields(sleepRecord) {
+    const hasSleptAt = !!sleepRecord.sleptAt;
+    const hasWokeUpAt = !!sleepRecord.wokeUpAt;
+
+    // sleep-only record
+    if (hasSleptAt && !hasWokeUpAt) {
+        sleepRecord.wokeUpNotes = undefined;
+    }
+
+    // wake-up-only record
+    if (!hasSleptAt && hasWokeUpAt) {
+        sleepRecord.sleepNotes = undefined;
+    }
+
+    // both present
+    // keep sleepNotes + wokeUpNotes
 }
 
 module.exports = {

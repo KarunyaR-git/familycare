@@ -22,7 +22,7 @@ export const routes: Routes = [
                 component: HomeComponent
             },
             {
-                path: 'activities',
+                path: 'activities/:babyId',
                 component: TodayActivitiesComponent
             },
             {

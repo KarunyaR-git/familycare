@@ -30,6 +30,7 @@ export class VaccinationFormComponent implements OnInit{
     public data: {
       mode: 'create' | 'edit';
       vaccination?: VaccinationResponse;
+      babyId?: string;
     },
     private vaccinationService: VaccinationService,
     private notificationService: NotificationService,
@@ -105,7 +106,9 @@ export class VaccinationFormComponent implements OnInit{
     const formValue = this.vaccinationForm.value;
     const baby = this.selectedBabyService.selectedBabyValue();
 
-    if (!baby) {
+    const babyId = baby?.id ?? this.data.babyId;
+
+    if (!babyId) {
       this.notificationService.error('Please select a baby');
       this.isLoading.set(false);
       return;
@@ -113,7 +116,7 @@ export class VaccinationFormComponent implements OnInit{
     const body = {
       ...formValue,
       vaccineAt: new Date(formValue.vaccineAt).toISOString(),
-      babyId: baby.id
+      babyId
     };
 
     if(this.data.mode === "create") {
@@ -132,6 +135,7 @@ export class VaccinationFormComponent implements OnInit{
       this.vaccinationService.updateVaccination((this.data.vaccination?._id || ''), body).subscribe({
         next: () => {          
           this.isLoading.set(false);
+          this.notificationService.success('Updated Successfully!');
           this.dialogRef.close("updated");
         },
         error: (error) => {
