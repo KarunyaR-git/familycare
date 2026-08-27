@@ -78,7 +78,7 @@
                                         }
                                     </p>
                                     @if(activity.durationMinutes != null) {
-                                        <p>{{formatMinutes(activity.durationMinutes)}}</p>
+                                        <p>{{activity.durationMinutes | formatMinutes}}</p>
                                     } 
                                     @if(activity.sleepNotes) {
                                         <p>{{activity.sleepNotes}}</p>
@@ -115,7 +115,7 @@
                                             }
                                         </p>
                                     } @else {
-                                        <p>{{formatMinutes(activity.duration || 0)}}</p>
+                                        <p>{{(activity.duration || 0) | formatMinutes}}</p>
                                     }
                                     @if(activity.notes) {
                                         <p>{{activity.notes}}</p>

@@ -1,0 +1,62 @@
+<div class="reports-page">
+    <div class="page-title">
+        <button
+            type="button"
+            class="back-button"
+            (click)="onBackToHome()">
+            <mat-icon>chevron_left</mat-icon>
+            Back            
+        </button>
+        <h3>Reports & Insights</h3>
+    </div>
+    <div class="page-content">
+        <div class="content-details">
+            <div class="detail-actions">
+                <h4>{{selectedBaby?.name}}</h4>
+                <app-dropdown-component class="period-dropdown" [placeholder]="'Select period'" [options]="periodList" [ngModel]="selectedPeriod()" (ngModelChange)="onPeriodChange($event)"></app-dropdown-component>
+            </div>
+            <div>
+                @if(periodDates.startDate) {
+                    {{periodDates.startDate | date: 'MMM d' }}
+                }
+                @if(periodDates.endDate) {
+                    @if(selectedPeriod() !== "today") {
+                        &nbsp;->&nbsp;
+                    }
+                    {{periodDates.endDate | date: 'MMM d' }}
+                }                
+            </div>
+
+        </div>
+        <div class="content-card">
+             @if (loading()) {
+                <app-skeleton-component
+                variant="card"
+                [count]="5">
+                </app-skeleton-component>
+            } @else {
+                <div class="summary-content-cards">
+                    <div class="summary-card">
+                        <div class="summary-card-title">Feeding</div>
+                        <div class="summary-card-body">
+                            {{reportDetails?.totalCount?.feeding}} feeds
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-card-title">Sleep</div>
+                        <div class="summary-card-body">
+                            <p>{{(reportDetails?.totalCount?.sleep?.duration || 0) | formatMinutes}}</p>
+                            <p>{{reportDetails?.totalCount?.sleep?.count}} sessions</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-card-title">Diaper</div>
+                        <div class="summary-card-body">
+                            {{reportDetails?.totalCount?.diaper}} changes
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

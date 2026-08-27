@@ -25,10 +25,11 @@ import { DiaperService } from '../../../core/services/diaper-service';
 import { GrowthService } from '../../../core/services/growth-service';
 import { VaccinationService } from '../../../core/services/vaccination-service';
 import { SleepService } from '../../../core/services/sleep-service';
+import { FormatMinutesPipe } from '../../../shared/pipes/formatMinutes.pipe';
 
 @Component({
   selector: 'app-today-activities-component',
-  imports: [MatIconModule, DropdownComponent, FormsModule, DatePipe, SkeletonComponent, CapitalizePipe],
+  imports: [MatIconModule, DropdownComponent, FormsModule, DatePipe, SkeletonComponent, CapitalizePipe, FormatMinutesPipe],
   templateUrl: './today-activities-component.html',
   styleUrl: './today-activities-component.css',
 })

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
-import { HomeDashboard, HomeDashboardBabyDetails, TodayActivities, TodayBabyActivities } from '../models/home-dasboard-response.model';
+import { BabyReport, HomeDashboard, HomeDashboardBabyDetails, TodayActivities, TodayBabyActivities } from '../models/home-dasboard-response.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -21,5 +21,9 @@ export class HomeService {
 
   getTodayActivities(babyId: string): Observable<TodayBabyActivities>{
     return this.http.get<TodayBabyActivities>(`${this.apiUrl}/home/dashboard/${babyId}/today-activities`);
+  }
+
+  getBabyReport(babyId: string, period: string): Observable<BabyReport>{
+    return this.http.get<BabyReport>(`${this.apiUrl}/home/dashboard/${babyId}/report?period=${period}`);
   }
 }

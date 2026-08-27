@@ -52,6 +52,12 @@ export class BabyDashboardComponent implements OnInit, OnChanges{
     this.babyChanged.emit(babyId);
   }
 
+  onViewReports(): void {
+    if (!this.selectedBabyId) return;
+
+    this.router.navigate(['/home', this.selectedBabyId, 'reports']);
+  }
+
   onViewTodayActivities(): void {
     this.router.navigate(['/home/activities', this.selectedBabyId]);
   }

@@ -1,3 +1,5 @@
+import { BabySummary } from "./baby-summary.model";
+
 export interface HomeDashboard extends HomeDashboardBabyDetails{
     babies: {
         id: string;
@@ -77,4 +79,39 @@ export interface TodayActivities {
     measuredAt?: string;
     weight?: number;
     height?: number;
+}
+
+export interface BabyReport {
+    period: string,
+    baby: BabySummary,
+    totalCount: {
+        feeding: number;
+        sleep: {
+            count: number;
+            duration: number;
+        },
+        diaper: number;
+    },
+    breakdown: {
+        feeding: {
+            _id: string;
+            count: number;
+            quantities?: {
+                unit: string;
+                quantity: number;
+            }[]
+        }[],
+        sleep: {
+            avgSleepPerDay: number
+        },
+        diaper: {
+            _id: string,
+            count: number
+        }[],
+        growth: {
+            measuredAt: string,
+            weight: number,
+            height: number
+        }[]
+    }
 }

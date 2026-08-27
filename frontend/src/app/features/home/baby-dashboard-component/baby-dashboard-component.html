@@ -7,7 +7,7 @@
         <app-quick-actions-component (dashboardRefresh)="onDashboardRefresh()"></app-quick-actions-component>
     </div>
     <div class="dashboard-card">
-        <app-baby-summary-component [details]="details"></app-baby-summary-component>
+        <app-baby-summary-component [details]="details" (viewReports)="onViewReports()"></app-baby-summary-component>
     </div>
     <div class="dashboard-card">
         <app-latest-activities-component [activities]="details?.latestActivities ?? []" (viewTodayActivities)="onViewTodayActivities()"></app-latest-activities-component>

@@ -1,5 +1,14 @@
 <div class="baby-summary">
-  <p class="section-title">Today's Summary</p>
+    <div class="baby-summary-header">
+        <p class="section-title">Today's Summary</p>
+        <button
+        type="button"
+        class="view-reports"
+        (click)="onViewReports()">
+        View Reports
+        <mat-icon>chevron_right</mat-icon>
+    </button>
+    </div>  
 
   <div class="baby-summary-content">
         <div class="activity-summary">

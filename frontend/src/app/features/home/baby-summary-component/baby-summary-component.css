@@ -38,3 +38,37 @@
   font-size: var(--font-size-lg);
   font-weight: 600;
 }
+
+.baby-summary-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.view-reports {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+
+  padding: 0;
+  border: none;
+  background: transparent;
+
+  color: var(--primary-color);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.view-reports:hover {
+  color: var(--primary-hover-color);
+}
+
+.view-reports mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}

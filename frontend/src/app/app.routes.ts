@@ -5,6 +5,7 @@ import { authGuard } from './auth-guard';
 import { RegisterComponent } from './features/auth/register/register-component';
 import { TodayActivitiesComponent } from './features/home/today-activities-component/today-activities-component';
 import { RemindersComponent } from './features/home/reminders-component/reminders-component';
+import { BabyReportComponent } from './features/reports/baby-report-component/baby-report-component';
 
 export const routes: Routes = [
     {path:'', redirectTo:'login', pathMatch:'full'},
@@ -28,6 +29,10 @@ export const routes: Routes = [
             {
                 path: 'reminders',
                 component: RemindersComponent
+            },
+            {
+                path: ':babyId/reports',
+                component: BabyReportComponent
             }
         ]
     }    

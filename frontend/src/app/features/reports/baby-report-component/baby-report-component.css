@@ -1,0 +1,122 @@
+.reports-page {
+    padding: var(--spacing-lg);
+}
+.page-title {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-lg) 0;
+    background-color: var(--background-color);
+}
+
+.page-title h3 {
+    grid-column: 2;
+    margin: 0;
+    color: var(--text-primary-color);
+    font-size: var(--font-size-xl);
+}
+
+.back-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-xs);
+    justify-self: start;
+
+    padding: 0;
+    border: none;
+    background: transparent;
+
+    color: var(--primary-color);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.back-button:hover{
+    color: var(--primary-hover-color);
+}
+
+.back-button mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+}
+
+.content-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);    
+}
+
+.detail-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+}
+
+.period-dropdown {
+    grid-column: 2;
+    margin: 0;
+}
+
+.summary-content-cards {
+    display: flex;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+    margin-top: var(--spacing-lg);
+}
+
+.summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-md) var(--spacing-lg);
+
+  background-color: var(--card-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+.summary-card {
+  flex: 1 1 280px;
+  min-width: 0;
+  min-height: 160px;
+}
+
+.summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  background-color: var(--card-hover-color);
+  border-color: var(--accent-color);
+}
+
+.summary-card-title {    
+    font-size: var(--font-size-lg);
+    font-weight: 600;    
+    color: var(--text-primary-color);
+    grid-column: 2;
+    align-items: center;
+}
+
+.summary-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    margin: 0;
+    color: var(--text-secondary-color);
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    p:not(:last-child) {
+        margin-bottom: 0;
+    }
+}
