@@ -210,10 +210,17 @@ function validateFeeding(feeding) {
         error.statusCode = 400;
         throw error;
     }
-    if((feeding.type === "formula" || feeding.type === "water")&& (!feeding.quantity || !feeding.unit)) {
-        const error = new Error("quantity and unit are required for type " + feeding.type);
-        error.statusCode = 400;
-        throw error;
+    if(feeding.type === "formula" || feeding.type === "water") {
+        if(!feeding.quantity || !feeding.unit) {
+            const error = new Error("quantity and unit are required for type " + feeding.type);
+            error.statusCode = 400;
+            throw error;
+        }
+        if(!["ml", "oz"].includes(feeding.unit)) {
+            const error = new Error("Invalid unit for type " + feeding.type);
+            error.statusCode = 400;
+            throw error;
+        }
     }
     if(feeding.type === "solid" && (!feeding.foodName || !feeding.quantity || !feeding.unit)) {
         const error = new Error("foodName, quantity and unit are required for type solid");

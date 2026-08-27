@@ -25,6 +25,7 @@ export class DropdownComponent {
   @Input() placeholder = 'Select';
   @Input() disabled = false;
   @Input() required = false;
+  @Input() errorMessage = '';
   
 
   value = '';

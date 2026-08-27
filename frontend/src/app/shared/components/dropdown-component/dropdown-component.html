@@ -14,6 +14,7 @@
 
     <select
         class="dropdown"
+        [class.error-input]="errorMessage"
         [value]="value"
         [disabled]="disabled"
         (change)="onValueChange($event)"
@@ -35,4 +36,9 @@
     <span class="dropdown-arrow">⌄</span>
 
   </div>
+  @if (errorMessage) {
+    <span class="error-message">
+      {{ errorMessage }}
+    </span>
+  }
 </div>

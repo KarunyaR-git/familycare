@@ -64,7 +64,8 @@
         placeholder="Select unit"
         [required]="feedingType !== 'other'"
         [options]="unitLists"
-        formControlName="unit">
+        formControlName="unit"
+        [errorMessage]="getErrorMessage('unit')">
         </app-dropdown-component>
     }
 

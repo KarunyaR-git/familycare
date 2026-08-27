@@ -178,6 +178,205 @@ async function getTodayActivities(req, res, next) {
     }    
 }
 
+async function getReportById(req, res, next) {
+    try {
+        const babyId = req.params.babyId;
+        const period = req.query.period || "today"
+        if(!["today", "7", "30"].includes(period)) {
+            const error = new Error('Invalid period');
+            error.statusCode = 400;
+            return next(error);
+        }
+        if(!mongoose.Types.ObjectId.isValid(babyId)) {
+            const error = new Error('Invalid id');
+            error.statusCode = 400;
+            return next(error);
+        }
+        const existingBaby = await Babies.findOne({
+            userId: req.user.userId,
+            _id: babyId
+        })
+        if(!existingBaby) {
+            const error = new Error('Baby not found');
+            error.statusCode = 404;
+            return next(error);
+        }
+        const filter = {
+                userId: req.user.userId,
+                babyId
+        }
+        const startOfDay = new Date();
+        startOfDay.setHours(0, 0, 0, 0);
+        let endDate = new Date(startOfDay);
+        endDate.setDate(endDate.getDate() + 1)
+        let startDate;
+        let noOfDays;
+        if(period === "today") {
+            startDate = new Date(startOfDay);
+            noOfDays = 1;
+        } else if( period === "7") {
+            startDate = new Date(startOfDay);
+            startDate.setDate(startDate.getDate() - 6);
+             noOfDays = 7;
+        } else {
+            startDate = new Date(startOfDay);
+            startDate.setDate(startDate.getDate() - 29);
+             noOfDays = 30;
+        }
+        const userObjectId = new mongoose.Types.ObjectId(req.user.userId);
+        const babyObjectId = new mongoose.Types.ObjectId(babyId);
+        
+        const diaper = await Diaper.aggregate([
+        {
+            $match: {
+            userId: userObjectId,
+            babyId: babyObjectId,
+            changedAt: {
+                $gte: startDate,
+                $lt: endDate
+            }
+            }
+        },
+        {
+            $group: {
+            _id: '$type',
+            count: {
+                $sum: 1
+            }
+            }
+        }
+        ]);
+        const totalDiaperCount = diaper.reduce((sum,type) => sum + type.count, 0)
+
+        const feeding = await Feeding.aggregate([
+            {
+                $match: {
+                userId: userObjectId,
+                babyId: babyObjectId,
+                feedingAt: {
+                    $gte: startDate,
+                    $lt: endDate
+                }
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        type: '$type',
+                        unit: '$unit'
+                    },
+
+                    count: {
+                        $sum: 1
+                    },
+
+                    totalQuantity: {
+                        $sum: {
+                            $ifNull: ['$quantity', 0]
+                        }
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: '$_id.type',
+
+                    count: {
+                        $sum: '$count'
+                    },
+
+                    quantities: {
+                        $push: {
+                            unit: '$_id.unit',
+                            quantity: '$totalQuantity'
+                        }
+                    }
+                }
+            }
+        ]);
+        const totalFeedingCount = feeding.reduce((sum,type) => sum + type.count, 0)
+
+        const sleepResult = await Sleep.aggregate([
+            {
+                $match: {
+                userId: userObjectId,
+                babyId: babyObjectId,
+                sleptAt: {
+                    $gte: startDate,
+                    $lt: endDate
+                }
+                }
+            },
+            {
+                $group: {
+                   _id: null ,
+                   count: {
+                        $sum: 1
+                   },
+                   totalDuration: {
+                        $sum: {
+                        $ifNull: ['$durationMinutes', 0]
+                    }
+                   }
+                }
+            }
+        ]);
+
+        const sleep = sleepResult[0] || {
+            count: 0,
+            totalDuration: 0
+        };
+        const avgSleepPerDay = Math.round(
+            sleep.totalDuration / noOfDays
+        );
+
+        const growth = await Growth.find({
+            ...filter,
+            measuredAt: {
+                $gte: startDate,
+                $lt: endDate
+            }
+        })
+        .select('-_id measuredAt weight height')
+        .sort({ measuredAt: 1 });
+
+        const feedingBreakDown = feeding.map((type)=> {
+            if(type._id !== "formula" && type._id !== "water") {
+                delete type.quantities;
+            }
+            return type;
+        })
+
+        const response = {
+            period,
+            baby: {
+                id: babyId,
+                name: existingBaby.name
+            },
+            totalCount: {
+                feeding: totalFeedingCount,
+                sleep: {
+                count: sleep.count,
+                duration: sleep.totalDuration
+                },
+                diaper: totalDiaperCount
+            },
+
+            breakdown: {
+                feeding: feedingBreakDown,
+                sleep: {
+                    avgSleepPerDay
+                },
+                diaper,
+                growth
+            }
+        }
+        res.status(200).json(response);
+    }catch(error) {
+        return next(error);
+    }
+}
+
 async function getBabyDetails(filter) {
     try{
         const startOfDay = new Date();
@@ -328,5 +527,6 @@ function normalizeActivities(activities, preserveActivityAt = false) {
 module.exports = {
     getDashboardDetails,
     getBabyDetailsById,
-    getTodayActivities
+    getTodayActivities,
+    getReportById
 }

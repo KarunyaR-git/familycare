@@ -13,6 +13,7 @@ import { SelectedBabyService } from '../../../core/services/selected-baby-servic
 import { toDateTimeLocal } from '../../../shared/utils/toDateTimeLocal';
 import { getErrorMessage } from '../../../shared/utils/error-handler';
 import { InputComponent } from '../../../shared/components/input-component/input-component';
+import { onlyValidUnitValidator } from '../../../shared/validators/onlyValidUnit.validator';
 
 @Component({
   selector: 'app-feeding-form-component',
@@ -201,10 +202,11 @@ export class FeedingFormComponent implements OnInit{
     } else if(type === "formula" || type === "water") {
       this.feedingForm.get('quantity')?.setValidators([
         Validators.required,
-        Validators.min(0.1)
+        Validators.min(0.1),
       ]);
       this.feedingForm.get('unit')?.setValidators([
-        Validators.required
+        Validators.required,
+        onlyValidUnitValidator        
       ]);
     } else if(type === "solid") {
       this.feedingForm.get('foodName')?.setValidators([
@@ -248,6 +250,10 @@ export class FeedingFormComponent implements OnInit{
     }
     if (control.errors?.['futureDate']) {
       return `${this.getFieldLabel(controlName)} cannot be in the future`;
+    }
+
+    if(control.errors?.['invalidUnit']) {
+      return `Invalid ${this.getFieldLabel(controlName)}`;
     }
 
     return '';
