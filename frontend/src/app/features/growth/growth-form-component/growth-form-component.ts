@@ -152,6 +152,6 @@ export class GrowthFormComponent implements OnInit{
   }
 
   get isDisabled() {
-    return !this.growthForm.valid || this.isLoading()
+    return !this.growthForm.valid || this.isLoading() || this.growthForm.pristine
   }
 }

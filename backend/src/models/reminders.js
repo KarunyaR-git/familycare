@@ -25,6 +25,9 @@ const ReminderSchema = new mongoose.Schema({
         lowercase: true,
         enum: ['pending', 'completed']
     },
+    notifiedAt: {
+        type: Date
+    },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true

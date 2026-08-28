@@ -27,3 +27,43 @@
   background-color: var(--card-hover-color);
   border-color: var(--accent-color);
 }
+
+.edit-button {
+  padding: 0;
+  border: none;
+  background: transparent;
+
+  color: var(--primary-color);
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.edit-button:hover {
+    color: var(--primary-hover-color);
+}
+
+.disable-edit {
+  color: var(--text-secondary-color);
+  cursor: not-allowed;
+}
+
+.disable-edit:hover {
+    color: var(--text-secondary-color);
+}
+
+.edit-button mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
+.baby-actions {
+  display: flex;
+  gap: var(--spacing-lg);
+  flex-wrap: wrap;
+}
+
+.baby-dropdown {
+  min-width: 300px;
+}

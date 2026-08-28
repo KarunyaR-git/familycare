@@ -1,22 +1,22 @@
 import { Component, Inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BabyResponse } from '../../../core/models/baby.model';
 import { BabyService } from '../../../core/services/baby-service';
 import { NotificationService } from '../../../core/services/notification-service';
-import { SelectedBabyService } from '../../../core/services/selected-baby-service';
 import { toDateTimeLocal } from '../../../shared/utils/toDateTimeLocal';
 import { getErrorMessage } from '../../../shared/utils/error-handler';
 import { ButtonComponent } from '../../../shared/components/button-component/button-component';
 import { DateTimeComponent } from '../../../shared/components/date-time-component/date-time-component';
 import { DropdownComponent } from '../../../shared/components/dropdown-component/dropdown-component';
 import { ModalComponent } from '../../../shared/components/modal-component/modal-component';
-import { TextareaComponent } from '../../../shared/components/textarea-component/textarea-component';
 import { InputComponent } from '../../../shared/components/input-component/input-component';
+import { MatIconModule } from '@angular/material/icon';
+import { ConfirmationModalComponent } from '../../../shared/components/confirmation-modal-component/confirmation-modal-component';
 
 @Component({
   selector: 'app-baby-form-component',
-  imports: [ReactiveFormsModule, ButtonComponent, DropdownComponent, DateTimeComponent, ModalComponent, InputComponent],
+  imports: [ReactiveFormsModule, ButtonComponent, DropdownComponent, DateTimeComponent, ModalComponent, InputComponent, MatIconModule],
   templateUrl: './baby-form-component.html',
   styleUrl: './baby-form-component.css',
 })
@@ -78,7 +78,7 @@ export class BabyFormComponent implements OnInit{
     },
     private babyService: BabyService,
     private notificationService: NotificationService,
-    private selectedBabyService: SelectedBabyService
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -86,7 +86,7 @@ export class BabyFormComponent implements OnInit{
       name: ['', Validators.required],
       gender: ['', Validators.required],
       dob: ['', Validators.required],
-      bloodGroup: ['']
+      bloodGroup: [null]
     });
     if(this.data.mode === 'edit') {
       this.loadData();
@@ -104,7 +104,7 @@ export class BabyFormComponent implements OnInit{
     this.babyForm.patchValue({
       name: baby.name,
       gender: baby.gender,
-      dob: toDateTimeLocal(baby.dob),
+      dob: toDateTimeLocal(baby.dob).split('T')[0],
       bloodGroup: baby.bloodGroup
     });
   }
@@ -174,12 +174,41 @@ export class BabyFormComponent implements OnInit{
       });
     }
   }
+
+  onDeleteBaby() {
+    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
+      disableClose: true,
+      data: {
+        title: 'Delete Baby',
+        message: 'Are you sure you want to delete this baby?',
+        confirmText: 'Delete',
+        cancelText: 'Cancel'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.isLoading.set(true);
+        this.babyService.deleteBaby(this.data.baby?._id || '').subscribe({
+          next: () => {
+            this.notificationService.success('Deleted Successfully!');
+            this.isLoading.set(false);
+            this.dialogRef.close({mode: "deleted"});
+          },
+          error: (error)=> {
+            this.notificationService.error(getErrorMessage(error));
+            this.isLoading.set(false);
+          }
+        });
+      }
+    }); 
+  }
   
   onCancel() {
     this.dialogRef.close();
   }
 
   get isDisabled() {
-    return !this.babyForm.valid || this.isLoading()
+    return !this.babyForm.valid || this.isLoading() || this.babyForm.pristine
   }
 }

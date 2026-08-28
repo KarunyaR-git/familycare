@@ -47,6 +47,15 @@
       (clicked)="onCancel()">
     </app-button-component>
 
+    @if(data.mode === 'edit') {
+      <button
+        type="button"
+        class="delete-button"
+        (click)="onDeleteBaby()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    }
+
     <app-button-component
       type="submit"
       [text]="data.mode === 'create' ? 'Add' : 'Update'"

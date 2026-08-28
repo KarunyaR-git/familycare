@@ -166,7 +166,7 @@ export class SleepFormComponent implements OnInit{
   }
 
   get isDisabled() {
-    return !this.sleepForm.valid || this.isLoading()
+    return !this.sleepForm.valid || this.isLoading() || this.sleepForm.pristine
   }
 
   get title() {

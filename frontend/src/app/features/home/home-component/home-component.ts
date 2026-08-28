@@ -26,10 +26,11 @@ export class HomeComponent implements OnInit {
   babyDetails: HomeDashboardBabyDetails | null = null;
   babies: BabySummary[]= [];
   loading = signal(false);
-  constructor(private homeService: HomeService, private notificationService: NotificationService, private selectedBabyService: SelectedBabyService, private authService: AuthService, private route: Router, public reminderService: ReminderService, private dialog: MatDialog) {}
+  constructor(private homeService: HomeService, private notificationService: NotificationService, public selectedBabyService: SelectedBabyService, private authService: AuthService, private route: Router, public reminderService: ReminderService, private dialog: MatDialog) {}
 
   ngOnInit() {
     this.loading.set(true);
+    this.reminderService.startReminderScheduler();
     this.homeService.getHomeDashboardDetails().subscribe({
       next: (response:HomeDashboard)=> {
         this.dashboardDetails = response;
@@ -106,9 +107,41 @@ export class HomeComponent implements OnInit {
           name: response.newBaby.name
         }
         this.babies = [...this.babies, baby];
-        this.loading.set(false);
+        if(this.babies.length === 1) {
+          this.selectedBabyService.setSelectedBaby(baby);
+          this.onrefreshdashboard()
+        } else {          
+          this.loading.set(false);
+        }
+        
       }
     });
+  }
+
+  onbabyDetailsUpdated(updatedBaby: {mode: string, baby:BabyResponse}) {
+    const babyId = this.selectedBabyService.selectedBabyValue()?.id || '';
+
+    if(updatedBaby.mode === "updated") {
+      const index = this.babies.findIndex((baby: any)=> baby.id === babyId)
+
+      if (index !== -1) {
+        const updatedSummary: BabySummary = {
+          id: updatedBaby.baby._id,
+          name: updatedBaby.baby.name
+        };        
+        this.babies[index] = updatedSummary;
+        this.babies = [...this.babies];
+
+        this.selectedBabyService.setSelectedBaby(updatedSummary);
+      }
+    } else if (updatedBaby.mode === 'deleted') {
+      this.babies = this.babies.filter(baby => baby.id !== babyId)
+      this.selectedBabyService.clearSelectedBaby();
+      if(this.babies.length > 0) {
+        this.selectedBabyService.setSelectedBaby(this.babies[0]);
+        this.onrefreshdashboard();
+      }
+    }
   }
 
   logoutUser() {

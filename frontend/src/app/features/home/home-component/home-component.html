@@ -1,7 +1,22 @@
 <app-header-component (addBaby)="onAddBaby()" (logout)="logoutUser()"></app-header-component>
 @if (!loading()) {
-    <app-baby-dashboard-component [details] = "babyDetails" [babies] = "babies" (babyChanged)="onBabyChange($event)" (refreshdashboard)="onrefreshdashboard()"></app-baby-dashboard-component>
-    <div class="reminder-dashboard">
-        <app-family-reminder-component [count]="reminderService.pendingCount()"></app-family-reminder-component>
-    </div>
+    @if(babies.length === 0) {
+        <div class="no-baby-card">
+            <h4>No baby added yet</h4>
+            <p>Add your baby to start tracking feeding, sleep, growth and more.</p>
+            <button
+                type="button"
+                class="add-baby"
+                (click)="onAddBaby()">
+                + Add Baby
+            </button>
+        </div>
+    } @else {
+        <app-baby-dashboard-component [details] = "babyDetails" [babies] = "babies" (babyChanged)="onBabyChange($event)" (refreshdashboard)="onrefreshdashboard()" (babyDetailsUpdated)="onbabyDetailsUpdated($event)"></app-baby-dashboard-component>
+        @if(selectedBabyService.selectedBabyValue()) {
+            <div class="reminder-dashboard">
+                <app-family-reminder-component [count]="reminderService.pendingCount()"></app-family-reminder-component>
+            </div>
+        }        
+    }    
 }

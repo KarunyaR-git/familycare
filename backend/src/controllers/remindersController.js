@@ -6,6 +6,7 @@ async function createReminder(req, res, next) {
     try {
         const reminder = new Reminder({
             ...req.body,
+            notifiedAt: null,
             userId: req.user.userId
         });
         await reminder.save();
@@ -46,6 +47,22 @@ async function getAllReminders(req, res, next) {
     }
 }
 
+async function getScheduledReminders(req, res, next) {
+    try {
+        const reminders = await Reminder.find({
+            userId: req.user.userId,
+            status: 'pending',
+            reminderAt: { $gt: new Date() },
+            notifiedAt: null
+        }).sort({ reminderAt: 1 });
+
+        return res.status(200).json(reminders);
+
+    } catch (error) {
+        return next(error);
+    }
+}
+
 async function getReminderById(req, res, next) {
     const id = req.params.id;
     if(mongoose.Types.ObjectId.isValid(id)) {
@@ -55,15 +72,7 @@ async function getReminderById(req, res, next) {
                 userId: req.user.userId
             });
             if(reminder) {
-                //if(reminder.userId.toString() === req.user.userId) {
-                    return res.status(200).json(reminder);
-                // } else {
-                //     console.log("reminder: ", reminder.userId);
-                //     console.log("user: ", req.user.userId);
-                //     const error = new Error('UnAuthorized Access');
-                //     error.statusCode = 401;
-                //     return next(error);
-                // }
+                return res.status(200).json(reminder);
             } else {
                 const error = new Error('Reminder not found');
                 error.statusCode = 404;
@@ -88,20 +97,74 @@ async function updateReminderById(req, res, next) {
         }
         const options = {new: true, runValidators: true};
         try{
-            const updatedReminder = await Reminder.findOneAndUpdate(filter, req.body, options);
-            if(updatedReminder) {
-                return res.status(200).json(updatedReminder);
-            } else {
-                const error = new Error("Reminder not found");
+            const reminder = await Reminder.findOne({
+            _id: req.params.id,
+            userId: req.user.userId
+            });
+
+            if (!reminder) {
+                const error = new Error('Reminder not found');
                 error.statusCode = 404;
-                return next(error);
+                throw error;
             }
+            delete req.body.notifiedAt;
+
+            const reminderAtChanged =
+            req.body.reminderAt !== undefined &&
+            new Date(req.body.reminderAt).getTime() !==
+            new Date(reminder.reminderAt).getTime();
+
+            const reminderBeforeChanged =
+            req.body.reminderBefore !== undefined &&
+            Number(req.body.reminderBefore) !==
+            Number(reminder.reminderBefore);
+
+            if (reminderAtChanged || reminderBeforeChanged) {
+                req.body.notifiedAt = null;
+            }
+
+            const updatedReminder = await Reminder.findOneAndUpdate(filter, req.body, options);
+            return res.status(200).json(updatedReminder);
         } catch(error) {
             return next(error);
         }
     } else {
         const error = new Error("Invalid Id");
         error.statusCode = 400;
+        return next(error);
+    }
+}
+
+async function updateNotifiedAtById(req, res, next) {
+    try {
+        const id = req.params.id;
+        if(!mongoose.Types.ObjectId.isValid(id)) {
+            const error = new Error("Invalid Id");
+            error.statusCode = 400;
+            return next(error);
+        }
+        const reminder = await Reminder.findOneAndUpdate(
+        {
+            _id: req.params.id,
+            userId: req.user.userId,
+            status: 'pending'
+        },
+        {
+            notifiedAt: new Date()
+        },
+        {
+            new: true
+        }
+        );
+
+        if (!reminder) {
+        const error = new Error('Reminder not found');
+        error.statusCode = 404;
+        throw error;
+        }
+
+        res.status(200).json(reminder);
+    } catch(error) {
         return next(error);
     }
 }
@@ -137,5 +200,7 @@ module.exports = {
     getAllReminders,
     getReminderById,
     updateReminderById,
-    deleteReminderById
+    deleteReminderById,
+    updateNotifiedAtById,
+    getScheduledReminders
 }

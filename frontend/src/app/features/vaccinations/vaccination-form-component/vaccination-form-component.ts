@@ -151,7 +151,7 @@ export class VaccinationFormComponent implements OnInit{
   }
 
   get isDisabled() {
-    return !this.vaccinationForm.valid || this.isLoading()
+    return !this.vaccinationForm.valid || this.isLoading() || this.vaccinationForm.pristine
   }
 }
 

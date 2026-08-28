@@ -9,10 +9,17 @@ import { QuickActionsComponent } from '../quick-actions-component/quick-actions-
 import { BabySummaryComponent } from '../baby-summary-component/baby-summary-component';
 import { LatestActivitiesComponent } from '../latest-activities-component/latest-activities-component';
 import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { BabyFormComponent } from '../../babies/baby-form-component/baby-form-component';
+import { BabyService } from '../../../core/services/baby-service';
+import { NotificationService } from '../../../core/services/notification-service';
+import { getErrorMessage } from '../../../shared/utils/error-handler';
+import { BabyResponse } from '../../../core/models/baby.model';
 
 @Component({
   selector: 'app-baby-dashboard-component',
-  imports: [DropdownComponent, FormsModule, QuickActionsComponent, BabySummaryComponent, LatestActivitiesComponent],
+  imports: [DropdownComponent, FormsModule, QuickActionsComponent, BabySummaryComponent, LatestActivitiesComponent, MatIconModule],
   templateUrl: './baby-dashboard-component.html',
   styleUrl: './baby-dashboard-component.css',
 })
@@ -22,11 +29,12 @@ export class BabyDashboardComponent implements OnInit, OnChanges{
   @Input() babies: BabySummary[] = [];
   @Output() babyChanged = new EventEmitter<string>();
   @Output() refreshdashboard = new EventEmitter<void>();
+  @Output() babyDetailsUpdated = new EventEmitter<any>();
   
   babiesLists:DropdownOption[] = [];
-  selectedBabyId = '';
+  selectedBabyId: string | null = '';
 
-  constructor(private selectedBabyService: SelectedBabyService, private router: Router) {}
+  constructor(private selectedBabyService: SelectedBabyService, private router: Router, private dialog: MatDialog, private babyService: BabyService, private notificationService: NotificationService) {}
 
   ngOnInit() {
     this.selectedBabyId = this.selectedBabyService.selectedBabyValue()?.id || '';
@@ -35,6 +43,7 @@ export class BabyDashboardComponent implements OnInit, OnChanges{
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['babies']) {
       this.babiesLists = mapDropdownOptions(this.babies);
+      this.selectedBabyId = this.selectedBabyService.selectedBabyValue()?.id || '';
     }
   }
 
@@ -64,5 +73,32 @@ export class BabyDashboardComponent implements OnInit, OnChanges{
 
   onDashboardRefresh() {
     this.refreshdashboard.emit();
+  }
+
+  onEditBaby() {
+    let baby = {};    
+    this.babyService.getBaby(this.selectedBabyId || '').subscribe({
+      next: (response) => {
+        baby = response;
+        const dialogRef = this.dialog.open(BabyFormComponent, {
+          disableClose: true,
+          data: {
+            mode: "edit",
+            baby
+          }
+        });
+
+        dialogRef.afterClosed().subscribe((response:any) => {      
+          if(response?.mode === "updated") {
+            this.babyDetailsUpdated.emit(response);        
+          } else if(response?.mode === "deleted") {
+            this.babyDetailsUpdated.emit(response);
+          }
+        });
+      },
+      error: (error) => {
+        this.notificationService.error(getErrorMessage(error));
+      }
+    }) 
   }
 }

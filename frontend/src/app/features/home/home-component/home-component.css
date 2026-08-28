@@ -1,3 +1,54 @@
 .reminder-dashboard {
   padding: 0 var(--spacing-lg) var(--spacing-lg);
 }
+
+.no-baby-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+
+  margin: 0 var(--spacing-lg) var(--spacing-lg);
+  padding: var(--spacing-lg);
+
+  background-color: var(--card-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.no-baby-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  background-color: var(--card-hover-color);
+  border-color: var(--accent-color);
+}
+
+.no-baby-card p {
+  margin: 0;
+  color: var(--text-secondary-color);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.add-baby {
+  align-self: flex-start;
+  padding: 0;
+  border: none;
+  background: transparent;
+
+  color: var(--primary-color);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.add-baby:hover {
+  color: var(--primary-hover-color);
+}

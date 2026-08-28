@@ -1,15 +1,28 @@
 <div class="baby-dashboard">
     <div class="dashboard-card">
         <p class="section-title">Select Baby</p>
-        <app-dropdown-component [placeholder]="'Select baby'" [options]="babiesLists" [ngModel]="selectedBabyId" (ngModelChange)="onBabyChange($event)"></app-dropdown-component>
+        <div class="baby-actions">
+            <app-dropdown-component class="baby-dropdown" [placeholder]="'Select baby'" [options]="babiesLists" [ngModel]="selectedBabyId" (ngModelChange)="onBabyChange($event)"></app-dropdown-component>
+            <button
+                type="button"
+                class="edit-button"
+                [class.disable-edit]="!selectedBabyId"
+                [disabled]="!selectedBabyId" 
+                (click)="onEditBaby()">
+                <mat-icon>edit</mat-icon>
+            </button>
+        </div>
+        
     </div>
-    <div class="dashboard-card">
-        <app-quick-actions-component (dashboardRefresh)="onDashboardRefresh()"></app-quick-actions-component>
-    </div>
-    <div class="dashboard-card">
-        <app-baby-summary-component [details]="details" (viewReports)="onViewReports()"></app-baby-summary-component>
-    </div>
-    <div class="dashboard-card">
-        <app-latest-activities-component [activities]="details?.latestActivities ?? []" (viewTodayActivities)="onViewTodayActivities()"></app-latest-activities-component>
-    </div>
+    @if(selectedBabyId) {
+        <div class="dashboard-card">
+            <app-quick-actions-component (dashboardRefresh)="onDashboardRefresh()"></app-quick-actions-component>
+        </div>
+        <div class="dashboard-card">
+            <app-baby-summary-component [details]="details" (viewReports)="onViewReports()"></app-baby-summary-component>
+        </div>
+        <div class="dashboard-card">
+            <app-latest-activities-component [activities]="details?.latestActivities ?? []" (viewTodayActivities)="onViewTodayActivities()"></app-latest-activities-component>
+        </div>
+    }    
 </div>

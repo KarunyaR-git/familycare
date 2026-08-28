@@ -82,7 +82,7 @@ export class RemindersComponent implements OnInit{
 
 loadReminders(): void {
   this.loading.set(true);
-
+  this.reminderService.rescheduleReminders();
   this.reminderService
     .getAllReminders(
       this.options.status,

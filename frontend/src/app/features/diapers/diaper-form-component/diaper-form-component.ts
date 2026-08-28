@@ -158,6 +158,6 @@ export class DiaperFormComponent implements OnInit{
   }
 
   get isDisabled() {
-    return !this.diaperForm.valid || this.isLoading()
+    return !this.diaperForm.valid || this.isLoading() || this.diaperForm.pristine
   }
 }

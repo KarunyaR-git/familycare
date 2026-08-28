@@ -151,6 +151,6 @@ export class ReminderFormComponent {
   }
 
   get isDisabled() {
-    return !this.reminderForm.valid || this.isLoading()
+    return !this.reminderForm.valid || this.isLoading() || this.reminderForm.pristine
   }
 }

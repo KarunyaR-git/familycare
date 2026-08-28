@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {createReminder, getAllReminders, getReminderById, updateReminderById, deleteReminderById} = require('../controllers/remindersController')
+const {createReminder, getAllReminders, getReminderById, updateReminderById, deleteReminderById, updateNotifiedAtById, getScheduledReminders} = require('../controllers/remindersController')
 
 /**
  * @swagger
@@ -103,6 +103,8 @@ router.post('/', createReminder);
  */
 router.get('/', getAllReminders);
 
+router.get('/scheduled', getScheduledReminders);
+
 /**
  * @swagger
  * /reminders/{id}:
@@ -180,6 +182,8 @@ router.get('/:id', getReminderById);
  *         description: Internal server error
  */
 router.put('/:id', updateReminderById);
+
+router.patch('/:id/notified', updateNotifiedAtById)
 
 /**
  * @swagger

@@ -14,3 +14,24 @@
   gap: var(--spacing-md);
   width: 100%;
 }
+
+.delete-button {
+  padding: 0;
+  border: none;
+  background: transparent;
+
+  color: var(--error-color);
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.delete-button:hover{
+  color: rgb(172, 4, 4);
+}
+
+.delete-button mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
