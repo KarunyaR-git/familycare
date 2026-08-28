@@ -14,7 +14,6 @@
 
 .welcome {
   padding: var(--spacing-lg);
-  background-color: var(--background-color);
 }
 
 .welcome h1 {
@@ -25,7 +24,7 @@
 
 .welcome p {
   margin: var(--spacing-xs) 0 0;
-  color: var(--text-secondary-color);
+  color: var(--text-on-page-color);
   font-size: var(--font-size-sm);
 }
 

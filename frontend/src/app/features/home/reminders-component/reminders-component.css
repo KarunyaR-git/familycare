@@ -8,7 +8,6 @@
 
     margin-bottom: var(--spacing-lg);
     padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-lg) 0;
-    background-color: var(--background-color);
 }
 
 .reminders-page-title h3 {
@@ -93,7 +92,7 @@
     border: none;
     background: transparent;
 
-    color: var(--primary-color);
+    color: var(--text-primary-color);
     font-size: var(--font-size-sm);
     font-weight: 600;
 

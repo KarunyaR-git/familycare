@@ -16,13 +16,22 @@
   --accent-color: #F4B183;
   --background-color: #F6FBFB;
   --card-color: #FFFFFF;
-  --card-hover-color: #FFF8F3;
+  --card-hover-color: #FFE9DC;
   --text-primary-color: #2C3E50;
   --text-secondary-color: #7F8C8D;
+  --text-on-page-color: #4F6667;
   --border-color: #DDE7E7;
   --success-color: #4CAF50;
   --error-color: #E74C3C;
   --warning-color: #F39C12;
+
+  --page-background:
+    linear-gradient(
+      135deg,
+      #9FD2D2 0%,
+      #CBE6E6 48%,
+      #F6D6BF 100%
+    );
 
   /* Typography */
   --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -89,4 +98,17 @@ body {
   color: var(--text-primary-color);
   font-size: var(--font-size-md);
   font-weight: 700;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--page-background);
+}
+
+app-root {
+  display: block;
+  min-height: 100vh;
+  background: var(--page-background);
 }

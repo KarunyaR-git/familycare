@@ -2,10 +2,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { LatestBabyActivitiesDetails } from '../../../core/models/home-dasboard-response.model';
 import { DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { CapitalizePipe } from '../../../shared/pipes/capitalize.pipe';
 
 @Component({
   selector: 'app-latest-activities-component',
-  imports: [DatePipe, MatIconModule],
+  imports: [DatePipe, MatIconModule, CapitalizePipe],
   templateUrl: './latest-activities-component.html',
   styleUrl: './latest-activities-component.css',
 })

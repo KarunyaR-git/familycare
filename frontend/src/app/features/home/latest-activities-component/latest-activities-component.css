@@ -36,6 +36,7 @@
 .activity-detail {
   color: var(--text-secondary-color);
   font-size: var(--font-size-sm);
+  font-weight: 500;
 }
 
 .empty-state {

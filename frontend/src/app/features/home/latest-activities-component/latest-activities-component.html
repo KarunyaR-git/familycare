@@ -74,7 +74,7 @@
       } @else {
 
         <span class="activity-detail">
-          {{ activity.type }}
+          {{ (activity?.type || '') | capitalize }}
           · {{ activity.activityAt | date:'shortTime' }}
           · {{ activity.activityAt | date:'mediumDate' }}
         </span>
