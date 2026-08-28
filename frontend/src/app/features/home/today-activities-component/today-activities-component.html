@@ -53,7 +53,7 @@
                                 } @else if(activity.activityType === 'growth') {
                                     <p>
                                         <span>{{activity.weight}}&nbsp;kg</span>
-                                        <span>&nbsp;&nbsp;.&nbsp;&nbsp;</span>
+                                        <span>&nbsp;&nbsp;·&nbsp;&nbsp;</span>
                                         <span>{{activity.height}}&nbsp;cm</span>
                                     </p>
                                     @if(activity.notes) {
@@ -62,7 +62,7 @@
                                 } @else if(activity.activityType === 'vaccination') {
                                     <p>
                                         <span class="activity-uppercase">{{activity.name}}</span>
-                                        <span>&nbsp;&nbsp;.&nbsp;&nbsp;Dose&nbsp;</span>
+                                        <span>&nbsp;&nbsp;·&nbsp;&nbsp;Dose&nbsp;</span>
                                         <span>{{activity.doseNumber}}</span>
                                     </p>
                                     @if(activity.notes) {
@@ -97,11 +97,11 @@
                                     <p>
                                         <span>{{(activity.type || '')| capitalize}}</span>
                                         @if(activity.type === 'solid') {
-                                            <span>&nbsp;&nbsp;.&nbsp;&nbsp;</span>
+                                            <span>&nbsp;&nbsp;·&nbsp;&nbsp;</span>
                                             <span>{{(activity.foodName || '') | capitalize}}</span>
                                         }
                                         @if(activity.type === 'breastfeeding') {
-                                            <span>&nbsp;&nbsp;.&nbsp;&nbsp;</span>
+                                            <span>&nbsp;&nbsp;·&nbsp;&nbsp;</span>
                                             <span>{{(activity.breastfeedingSide || '') | capitalize}}</span>
                                         }
                                     </p>

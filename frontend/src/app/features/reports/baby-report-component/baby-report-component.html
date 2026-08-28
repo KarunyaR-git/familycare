@@ -16,15 +16,13 @@
                 <app-dropdown-component class="period-dropdown" [placeholder]="'Select period'" [options]="periodList" [ngModel]="selectedPeriod()" (ngModelChange)="onPeriodChange($event)"></app-dropdown-component>
             </div>
             <div>
-                @if(periodDates.startDate) {
-                    {{periodDates.startDate | date: 'MMM d' }}
-                }
-                @if(periodDates.endDate) {
-                    @if(selectedPeriod() !== "today") {
-                        &nbsp;->&nbsp;
-                    }
-                    {{periodDates.endDate | date: 'MMM d' }}
-                }                
+                @if(selectedPeriod() === 'today') {
+                    {{ periodDates.endDate | date:'MMM d' }}
+                } @else {
+                    {{ periodDates.startDate | date:'MMM d' }}
+                    &nbsp;->&nbsp;
+                    {{ periodDates.endDate | date:'MMM d' }}
+                }               
             </div>
 
         </div>
@@ -54,6 +52,106 @@
                         <div class="summary-card-body">
                             {{reportDetails?.totalCount?.diaper}} changes
                         </div>
+                    </div>
+                </div>
+                <div class="breakdown-card">
+                    <div class="breakdown-card-title">Feeding Breakdown</div>
+                    <div class="breakdown-card-body">
+                        @if(reportDetails?.breakdown?.feeding?.length === 0) {
+                            <p class="empty-state">No feeding activities recorded in this period.</p>
+                        } @else {
+                            @for(type of reportDetails?.breakdown?.feeding; track type._id) {
+                                <div class="breakdown-type">
+                                    <span>{{type._id | capitalize}}</span>
+                                    <div class="bar-details">
+                                        <div class="bar-track">
+                                            <div
+                                                class="bar-fill"
+                                                [style.width.%]="getPercentage(type.count, (reportDetails?.totalCount?.feeding || 0))">
+                                            </div>
+                                        </div>
+                                        @if(type.quantities) {
+                                            <div class="quantity-text">
+                                                @for(quantity of type.quantities; track quantity.unit) {
+                                                    <span>{{quantity.quantity}}&nbsp;{{quantity.unit}}</span>
+                                                    @if(!$last) {
+                                                        <span>&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+                                                    }
+                                                }
+                                            </div>
+                                        }                                        
+                                    </div>
+                                    <span>{{type.count}}</span>
+                                </div>
+                            }
+                        }                        
+                    </div>
+                </div>
+                <div class="breakdown-card">
+                    <div class="breakdown-card-title">Sleep Insights</div>
+                    <div class="breakdown-card-body">
+                        @if(reportDetails?.totalCount?.sleep?.count === 0) {
+                            <p class="empty-state">No sleep activities recorded in this period.</p>
+                        } @else {
+                            <div class="sleep-breakdown">
+                                <div class="sleep-part">
+                                    <span>Average sleep / day</span>
+                                    <span>{{(reportDetails?.breakdown?.sleep?.avgSleepPerDay || 0) | formatMinutes}}</span>
+                                </div>
+                                <div class="sleep-part">
+                                    <span>Total sleep</span>
+                                    <span>{{(reportDetails?.totalCount?.sleep?.duration || 0) | formatMinutes}}</span>
+                                </div>
+                                <div class="sleep-part">
+                                    <span>Sessions</span>
+                                    <span>{{reportDetails?.totalCount?.sleep?.count}}</span>
+                                </div>
+                            </div>
+                        }                        
+                    </div>
+                </div>
+                <div class="breakdown-card">
+                    <div class="breakdown-card-title">Diaper Breakdown</div>
+                    <div class="breakdown-card-body">
+                        @if(reportDetails?.breakdown?.diaper?.length === 0) {
+                            <p class="empty-state">No diaper activities recorded in this period.</p>
+                        } @else {
+                            @for(type of reportDetails?.breakdown?.diaper; track type._id) {
+                                <div class="breakdown-type">
+                                    <span>{{type._id | capitalize}}</span>
+                                    <div class="bar-track">
+                                        <div
+                                            class="bar-fill"
+                                            [style.width.%]="getPercentage(type.count, (reportDetails?.totalCount?.diaper || 0))">
+                                        </div>
+                                    </div>
+                                    <span>{{type.count}}</span>
+                                </div>
+                            }
+                        }                        
+                    </div>
+                </div>
+                <div class="breakdown-card">
+                    <div class="breakdown-card-title">Growth Trend</div>
+                    <div class="breakdown-card-body">
+                        @if(reportDetails?.breakdown?.growth?.length === 0) {
+                            <p class="empty-state">No growth activities recorded in this period.</p>
+                        }  @else if (reportDetails?.breakdown?.growth?.length === 1) {
+                            @let growth = reportDetails?.breakdown?.growth?.[0];
+                            <div class="growth-single">
+                                <p>Weight: {{ growth?.weight }} kg</p>
+                                <p>Height: {{ growth?.height }} cm</p>
+                            </div>
+                        } @else {
+                            <div class="growth-chart-container">
+                                <canvas
+                                baseChart
+                                [data]="growthChartData"
+                                [options]="growthChartOptions"
+                                [type]="'line'">
+                                </canvas>
+                            </div>
+                        }                       
                     </div>
                 </div>
             }

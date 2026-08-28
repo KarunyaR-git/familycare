@@ -70,11 +70,12 @@
     margin-top: var(--spacing-lg);
 }
 
-.summary-card {
+.summary-card, .breakdown-card {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xs);
   padding: var(--spacing-md) var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
 
   background-color: var(--card-color);
   border: 1px solid var(--border-color);
@@ -93,14 +94,14 @@
   min-height: 160px;
 }
 
-.summary-card:hover {
+.summary-card:hover, .breakdown-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
   background-color: var(--card-hover-color);
   border-color: var(--accent-color);
 }
 
-.summary-card-title {    
+.summary-card-title, .breakdown-card-title {    
     font-size: var(--font-size-lg);
     font-weight: 600;    
     color: var(--text-primary-color);
@@ -108,7 +109,7 @@
     align-items: center;
 }
 
-.summary-card-body {
+.summary-card-body, .breakdown-card-body {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-xs);
@@ -119,4 +120,67 @@
     p:not(:last-child) {
         margin-bottom: 0;
     }
+}
+
+.breakdown-type {
+  display: grid;
+  grid-template-columns: 130px minmax(200px, 700px) 40px;
+  align-items: start;
+  gap: var(--spacing-xl);
+  margin-top: var(--spacing-md);
+}
+
+.bar-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.empty-state {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: center;
+    align-items: center;
+    padding: var(--spacing-lg);
+    color: var(--text-secondary-color);
+    font-size: var(--font-size-sm);
+    font-style: italic;
+}
+
+.bar-track {
+  width: 100%;
+  height: 10px;
+  background-color: var(--border-color);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background-color: var(--primary-color);
+  border-radius: 999px;
+}
+
+.quantity-text {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary-color);
+  font-weight: 600;
+}
+
+.growth-chart-container {
+  height: 380px;
+}
+
+.sleep-breakdown {
+    display: grid;
+    grid-template-columns: 0.5fr 0.5fr 1fr;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+}
+
+.sleep-part {
+    display:flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
 }
