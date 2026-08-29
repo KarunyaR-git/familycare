@@ -17,7 +17,7 @@ export class ReminderService {
   constructor(private http: HttpClient, private notificationService: NotificationService){}
 
   getAllReminders(status:string, page:number, sortBy:string, order: string): Observable<ReminderResponse> {
-    return this.http.get<ReminderResponse>(`${this.apiUrl}/reminders?status=${status}&page=${page}&limit=2&sortBy=${sortBy}&order=${order}`);
+    return this.http.get<ReminderResponse>(`${this.apiUrl}/reminders?status=${status}&page=${page}&limit=10&sortBy=${sortBy}&order=${order}`);
   }
 
   getPendingReminders(): Observable<ReminderData[]> {
@@ -132,13 +132,23 @@ export class ReminderService {
   private showReminderNotification(reminders: any[]): void {
     if (reminders.length === 1) {
       this.notificationService.info(
-        `Reminder: ${reminders[0].title}`
+        `Reminder: ${reminders[0].title}`, 8000
       );
-    } else {
-      this.notificationService.info(
-        `You have ${reminders.length} upcoming reminders`
-      );
+      return;
     }
+
+    const firstTwoTitles = reminders
+      .slice(0, 2)
+      .map((reminder: any) => reminder.title)
+      .join(', ');
+
+    const remainingCount = reminders.length - 2;
+
+    const message = remainingCount > 0
+      ? `${reminders.length} upcoming reminders: ${firstTwoTitles} +${remainingCount} more`
+      : `Upcoming reminders: ${firstTwoTitles}`;
+
+    this.notificationService.info(message, 8000);
   }
 
   rescheduleReminders(): void {

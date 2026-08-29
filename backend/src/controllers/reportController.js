@@ -82,11 +82,6 @@ async function getBabyDashboard(req, res, next) {
                         $sum: {
                             $cond: [
                                 {
-                                    // Learning Note:
-                                    // $ne did not work as expected because after
-                                    // $lookup + $unwind (preserveNullAndEmptyArrays),
-                                    // the missing lookup result wasn't handled as intended.
-                                    // $ifNull safely handles null/missing values here.
                                     $ifNull: ["$vaccinations", false]
                                 },
                                 1,

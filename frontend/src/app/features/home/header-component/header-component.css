@@ -35,18 +35,10 @@
 }
 
 .brand-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 34px;
-  height: 34px;
-
-  border-radius: 50%;
-  background-color: var(--primary-color);
-  color: var(--card-color);
-
-  font-size: var(--font-size-md);
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  display: block;
 }
 
 .brand-name {

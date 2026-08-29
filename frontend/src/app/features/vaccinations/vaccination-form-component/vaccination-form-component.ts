@@ -40,7 +40,7 @@ export class VaccinationFormComponent implements OnInit{
   ngOnInit(): void {
     this.vaccinationForm = this.fb.group({
       name: [null , [Validators.required]],
-      doseNumber: [null , [Validators.required, Validators.min(1)]],
+      doseNumber: [null , [Validators.required, Validators.min(1), Validators.max(20)]],
       vaccineAt: ['', [Validators.required]],
       notes: ['']
     });
@@ -73,10 +73,13 @@ export class VaccinationFormComponent implements OnInit{
     if (control.errors['required']) {
       return `${this.getFieldLabel(controlName)} is required`;
     }
-
     if (control.errors['min']) {
       const minValue = control.errors['min'].min;
       return `${this.getFieldLabel(controlName)} cannot be less than ${minValue}`;
+    }
+    if (control.errors?.['max']) {
+      const maxValue = control.errors['max'].max;
+      return `${this.getFieldLabel(controlName)} cannot be greater than ${maxValue}`;
     }
     if (control.errors?.['futureDate']) {
       return `${this.getFieldLabel(controlName)} cannot be in the future`;

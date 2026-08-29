@@ -84,10 +84,10 @@ export class SleepFormComponent implements OnInit{
 
   getErrorMessage(controlName: string): string {
     const control = this.sleepForm.get(controlName);
-    if (!control || !control.touched || !control.errors) {
+    if (!control || !control.touched) {
       return '';
     }
-    if (control.errors['required']) {
+    if (control.errors?.['required']) {
       return `${this.getFieldLabel(controlName)} is required`;
     }
 

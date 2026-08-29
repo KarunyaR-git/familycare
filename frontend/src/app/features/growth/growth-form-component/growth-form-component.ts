@@ -40,8 +40,8 @@ export class GrowthFormComponent implements OnInit{
 
   ngOnInit(): void {
     this.growthForm = this.fb.group({
-      weight: [null , [Validators.required, Validators.min(1)]],
-      height: [null , [Validators.required, Validators.min(10)]],
+      weight: [null , [Validators.required, Validators.min(1), Validators.max(100)]],
+      height: [null , [Validators.required, Validators.min(10), Validators.max(200)]],
       measuredAt: ['', [Validators.required]],
       notes: ['']
     });
@@ -74,10 +74,13 @@ export class GrowthFormComponent implements OnInit{
     if (control.errors['required']) {
       return `${this.getFieldLabel(controlName)} is required`;
     }
-
     if (control.errors['min']) {
       const minValue = control.errors['min'].min;
       return `${this.getFieldLabel(controlName)} cannot be less than ${minValue}`;
+    }
+    if (control.errors['max']) {
+      const maxValue = control.errors['max'].max;
+      return `${this.getFieldLabel(controlName)} cannot be greater than ${maxValue}`;
     }
     if (control.errors?.['futureDate']) {
       return `${this.getFieldLabel(controlName)} cannot be in the future`;

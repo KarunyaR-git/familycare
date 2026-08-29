@@ -14,6 +14,7 @@ import { toDateTimeLocal } from '../../../shared/utils/toDateTimeLocal';
 import { getErrorMessage } from '../../../shared/utils/error-handler';
 import { InputComponent } from '../../../shared/components/input-component/input-component';
 import { onlyValidUnitValidator } from '../../../shared/validators/onlyValidUnit.validator';
+import { onlyValidQuantityValidator } from '../../../shared/validators/onlyValidQuantity.validator';
 
 @Component({
   selector: 'app-feeding-form-component',
@@ -187,6 +188,8 @@ export class FeedingFormComponent implements OnInit{
       control?.clearValidators();
       control?.updateValueAndValidity({ emitEvent: false });
     });
+    this.feedingForm.clearValidators();
+    this.feedingForm.updateValueAndValidity({ emitEvent: false });
   }
 
   setValidators() {
@@ -194,7 +197,8 @@ export class FeedingFormComponent implements OnInit{
     if(type === "breastfeeding") {
       this.feedingForm.get('duration')?.setValidators([
         Validators.required,
-        Validators.min(1)
+        Validators.min(1),
+        Validators.max(300)
       ]);
       this.feedingForm.get('breastfeedingSide')?.setValidators([
         Validators.required
@@ -225,6 +229,10 @@ export class FeedingFormComponent implements OnInit{
       ]);
     }
 
+    if(type !== "breastfeeding") {
+      this.feedingForm.setValidators(onlyValidQuantityValidator);
+    }
+
     [
       'foodName',
       'quantity',
@@ -238,15 +246,19 @@ export class FeedingFormComponent implements OnInit{
 
   getErrorMessage(controlName: string): string {
     const control = this.feedingForm.get(controlName);
-    if (!control || !control.touched || !control.errors) {
+    if (!control || !control.touched) {
       return '';
     }
-    if (control.errors['required']) {
+    if (control.errors?.['required']) {
       return `${this.getFieldLabel(controlName)} is required`;
     }
-    if (control.errors['min']) {
+    if (control.errors?.['min']) {
       const minValue = control.errors['min'].min;
       return `${this.getFieldLabel(controlName)} cannot be less than ${minValue}`;
+    }
+    if (control.errors?.['max']) {
+      const maxValue = control.errors['max'].max;
+      return `${this.getFieldLabel(controlName)} cannot be greater than ${maxValue}`;
     }
     if (control.errors?.['futureDate']) {
       return `${this.getFieldLabel(controlName)} cannot be in the future`;
@@ -254,6 +266,20 @@ export class FeedingFormComponent implements OnInit{
 
     if(control.errors?.['invalidUnit']) {
       return `Invalid ${this.getFieldLabel(controlName)}`;
+    }
+
+    if(controlName === "quantity" && this.feedingForm.errors?.['invalidQuantity']) {
+      const quantityLimits:any= {
+        ml: 500,
+        oz: 20,
+        gram: 500,
+        spoon: 20,
+        piece: 20,
+        serving: 10,
+        other: 500
+      };
+      const unit = this.feedingForm.get("unit")?.value;
+      return `${this.getFieldLabel(controlName)} cannot exceed ${quantityLimits[unit]} ${unit}`;
     }
 
     return '';

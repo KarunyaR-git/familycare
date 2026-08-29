@@ -145,6 +145,7 @@ export class HomeComponent implements OnInit {
   }
 
   logoutUser() {
+    this.reminderService.clearReminderTimer();
     this.authService.logout();
   }
 }

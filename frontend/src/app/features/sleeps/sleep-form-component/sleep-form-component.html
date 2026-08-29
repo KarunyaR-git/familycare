@@ -23,10 +23,10 @@
         formControlName="sleepNotes">
         </app-textarea-component>
     }
-    @if(data.action !== "sleep") {
+    @if((data.action === "sleep" && data.mode === "edit") || data.action === "wakeup" || data.action === "both") {
         <app-date-time-component
         label="WokeUp At"
-        [required] = "true"
+        [required] = "data.action === 'wakeup' || data.action === 'both'"
         [blockFuture]="true"
         formControlName="wokeUpAt"
         [errorMessage]="getErrorMessage('wokeUpAt')">

@@ -8,11 +8,13 @@ const GrowthSchema = new mongoose.Schema({
     weight: {
         type: Number,
         min: 1,
+        max: 100,
         required: true
     },
     height: {
         type: Number,
         min: 10,
+        max: 200,
         required: true
     },
     notes: {

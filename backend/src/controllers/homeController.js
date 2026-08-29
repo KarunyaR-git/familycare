@@ -162,7 +162,7 @@ async function getTodayActivities(req, res, next) {
         const activities = [...sleep, ...feeding, ...diaper, ...vaccination, ...growth];
         const normalizedActivities = normalizeActivities(activities, true);
         normalizedActivities.sort(
-            (a, b) => new Date(a.activityAt) - new Date(b.activityAt)
+            (a, b) => new Date(b.activityAt) - new Date(a.activityAt)
         );
         const response = {
             baby: {

@@ -21,7 +21,8 @@ const FeedingSchema = new mongoose.Schema({
     },
     duration: {
         type: Number,
-        min: 1
+        min: 1,
+        max: 300
     },
     breastfeedingSide: {
         type: String,

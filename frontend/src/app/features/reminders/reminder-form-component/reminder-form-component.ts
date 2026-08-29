@@ -119,7 +119,10 @@ export class ReminderFormComponent {
     };
     if(this.data.mode === "create") {
       this.reminderService.createReminder(body).subscribe({
-      next: () => {
+      next: (response) => {
+        if(response.status === 'pending') {
+          this.reminderService.pendingCount.update(count => count + 1);
+        }
         this.isLoading.set(false);
         this.dialogRef.close("created");
       },

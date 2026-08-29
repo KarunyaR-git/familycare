@@ -227,6 +227,27 @@ function validateFeeding(feeding) {
         error.statusCode = 400;
         throw error;
     }
+    validateQuantityLimits(feeding);
+}
+
+function validateQuantityLimits (feeding) {
+    const quantityLimits= {
+        ml: 500,
+        oz: 20,
+        gram: 500,
+        spoon: 20,
+        piece: 20,
+        serving: 10,
+        other: 500
+    };
+
+    if (feeding.quantity && feeding.unit && feeding.quantity > quantityLimits[feeding.unit]) {
+        const error = new Error(
+            `Quantity cannot exceed ${quantityLimits[feeding.unit]} ${feeding.unit}`
+        );
+        error.statusCode = 400;
+        throw error;
+    }
 }
 
 module.exports = {

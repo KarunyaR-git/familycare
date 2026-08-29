@@ -8,12 +8,12 @@ const VaccinationSchema = new mongoose.Schema({
     name: {
         type: String,
         trim: true,
-        lowercase: true,
         required: true
     },
     doseNumber: {
         type: Number,
         min: 1,
+        max: 20,
         required: true
     },
     notes: {
