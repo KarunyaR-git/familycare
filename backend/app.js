@@ -26,8 +26,7 @@ const swaggerSpec = require('./src/config/swagger');
 const mongoose = require('mongoose');
 
 app.use(cors({
-    origin: 'http://localhost:4200',
-    credentials: true
+    origin: process.env.FRONTEND_URL || 'http://localhost:4200'
 }));
 
 app.use(express.json());
