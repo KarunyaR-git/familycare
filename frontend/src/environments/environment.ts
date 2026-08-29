@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.familycare.com'
+  apiUrl: 'https://familycare-backend-ig8c.onrender.com'
 };
