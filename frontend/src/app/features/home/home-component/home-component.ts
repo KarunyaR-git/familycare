@@ -14,10 +14,11 @@ import { ReminderService } from '../../../core/services/reminder-service';
 import { MatDialog } from '@angular/material/dialog';
 import { BabyFormComponent } from '../../babies/baby-form-component/baby-form-component';
 import { BabyResponse } from '../../../core/models/baby.model';
+import { SkeletonComponent } from '../../../shared/components/skeleton-component/skeleton-component';
 
 @Component({
   selector: 'home-component',
-  imports: [HeaderComponent, BabyDashboardComponent, FamilyReminderComponent],
+  imports: [HeaderComponent, BabyDashboardComponent, FamilyReminderComponent, SkeletonComponent],
   templateUrl: './home-component.html',
   styleUrl: './home-component.css',
 })

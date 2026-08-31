@@ -1,5 +1,10 @@
 <app-header-component (addBaby)="onAddBaby()" (logout)="logoutUser()"></app-header-component>
-@if (!loading()) {
+@if (loading()) {
+    <app-skeleton-component
+    variant="card"
+    [count]="5">
+    </app-skeleton-component>
+} @else {
     @if(babies.length === 0) {
         <div class="no-baby-card">
             <h4>No baby added yet</h4>
