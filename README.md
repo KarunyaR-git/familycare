@@ -79,16 +79,16 @@ familycare/
 ## Screenshots
 
 ### Login
-![FamilyCare Login](screenshots/login.png)
+![FamilyCare Login](/screenshots/login.png)
 
 ### Dashboard
-![FamilyCare Dashboard](screenshots/dashboard.png)
+![FamilyCare Dashboard](/screenshots/dashboard.png)
 
 ### Today's Activities
-![FamilyCare Today's Activities](screenshots/today-activities.png)
+![FamilyCare Today's Activities](/screenshots/today-activities.png)
 
 ### Reports & Insights
-![FamilyCare Reports and Insights](screenshots/reports.png)
+![FamilyCare Reports and Insights](/screenshots/reports.png)
 
 ## Running Locally
 
