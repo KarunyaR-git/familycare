@@ -1,6 +1,7 @@
 .dropdown-container {
   width: 100%;
   max-width: 320px;
+  min-width: 0;
 }
 
 .dropdown-label {

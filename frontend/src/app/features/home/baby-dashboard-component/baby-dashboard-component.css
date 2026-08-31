@@ -67,3 +67,22 @@
 .baby-dropdown {
   min-width: 300px;
 }
+
+@media (max-width: 600px) {
+  .baby-dashboard {
+    padding: var(--spacing-md);
+  }
+
+  .baby-actions {
+    gap: var(--spacing-md);
+  }
+
+  .baby-dropdown {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .baby-actions app-dropdown-component {
+    min-width: 0;
+  }
+}
