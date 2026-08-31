@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { CreateOrUpdateReminderResponse, ReminderData, ReminderRequest, ReminderResponse, UpdateReminderRequest } from '../models/reminder-response.model';
 import { forkJoin, Observable } from 'rxjs';
