@@ -183,3 +183,45 @@
     flex-direction: column;
     gap: var(--spacing-xs);
 }
+
+@media (max-width: 600px) {
+
+    .reports-page {
+        padding: var(--spacing-md);
+    }
+
+    /* Header */
+    .page-title {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+
+        padding: var(--spacing-md) 0;
+        margin-bottom: var(--spacing-md);
+    }
+
+    .page-title h3 {
+        margin: 0;
+    }
+
+    /* Feeding + Diaper breakdown rows */
+    .breakdown-type {
+        grid-template-columns: 100px minmax(0, 1fr) auto;
+        gap: var(--spacing-sm);
+        align-items: center;
+    }
+
+    .bar-details {
+        min-width: 0;
+    }
+
+    .breakdown-type > span:last-child {
+        justify-self: end;
+        min-width: 20px;
+        text-align: right;
+    }
+
+    .breakdown-type .bar-track {
+        margin-top: 4px;
+    }
+}
